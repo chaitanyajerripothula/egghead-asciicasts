@@ -103,6 +103,6 @@ function tick() {
 
 2:44 **This isn't how you normally re-render new application. Typically, whenever state changes, you don't have to re-render your entire application**, but I wanted to show you this so you have an understanding of what React is really doing for you.
 
-2:56 When you create these React elements, you give that to ReactDOM.render or you trigger a re-render of a component, and React is going to compare the elements that you returned this time with the elements that you returned last time.
+2:56 When you create these React elements, you give that to `ReactDOM.render` or you trigger a re-render of a component, and React is going to compare the elements that you returned this time with the elements that you returned last time.
 
 3:09 It's going to do a div of those two elements, and then it will update the DOM surgically to only update the things that were different between the last time and this time you returned JSX.
