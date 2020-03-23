@@ -90,4 +90,3 @@ Then we just need to display that error message. We'll copy `error`. Come down t
 2:40 If you ever need to know exactly what the user is typing as they're typing it, then you can use the `onChange` event to get access to the value of the `input` and update that in the state of your component.
 
 2:51 Then changes to that value will trigger a re-render of your component. That state `value` will be whatever the user has typed, allowing us to create this error message based on whether the `username` is lowercase. Then we display that error message `<div style={{color: 'red'}}>{error}</div>` in red, in this div. We disable the submit button if there is an error message.
-@lsminter

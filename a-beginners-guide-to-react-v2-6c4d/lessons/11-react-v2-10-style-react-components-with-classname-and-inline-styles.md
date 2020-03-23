@@ -43,7 +43,7 @@ With that, we get a small, light-blue box. Let's also add a `fontStyle` of `ital
 </div>
 ```
 
-01:35 There's a fair amount of duplication in these, so what I'm going to do is make a new `function` component called `Box`. This is going to take some `props`, and then will return a `div`, and we'll spread all the props. Right now, this Box component basically functions as a div. We could replace all of these divs, with multiple cursors here, with a box. We save that, and we get the exact same result.
+01:35 There's a fair amount of duplication in these, so what I'm going to do is make a new `function` component called `Box`. This is going to take some `props`, and then will return a `div`, and we'll spread all the props. Right now, this Box component basically functions as a div. We could replace all of these `div`'s, with multiple cursors here, with a box. We save that, and we get the exact same result.
 
 ```html
 <script type="text/babel">
@@ -193,7 +193,7 @@ function Box({className = '', style, ...rest}) {
 
 05:57 Let's make that work. I'll remove the className here. 
 
-```html
+```js
 <div>
   <Box 
     size="small" 
@@ -233,7 +233,7 @@ If we save that, then we get a small, light-blue box, and users of our box compo
 
 06:59 We can separate our components from the classNames used to style them. That said, we can still apply our own classNames if we want to, and we can apply our styles if we want to because those are going to be combined with whatever is happening in the box. Let's go ahead and update the classNames for both of these because I like the size prop better.
 
-```html
+```js
 <div>
   <Box 
     size="small" 
@@ -332,5 +332,3 @@ We had a bunch of CSS that we wanted to apply to our divs here to make a small, 
 10:02 Also accepting a size prop to separate the code for the users of the Box component from the code necessary to make a box of that specified style. Then we take the rest of the props, and spread that on the underlying div so that users can provide additional props like ID is root as well as the children prop for the contents of the box.
 
 10:24 One last thing that I want to show you is [Tailwind CSS](https://tailwindcss.com/), which I recommend you take a look at for building consistent user interfaces. Definitely give this a look for building and styling your applications. You can apply the same principles that we learned to building custom components that utilize these classNames.
-
-

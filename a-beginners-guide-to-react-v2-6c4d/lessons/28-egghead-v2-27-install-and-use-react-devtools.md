@@ -1,3 +1,5 @@
+**THE VIDEO IS CRITICAL FOR THIS LESSON.**
+
 Instructor: 00:00 Here I can fill out a Pokémon name like Pikachu. I submit, and I get some Pikachu data. If I make a typo here, then I'm not going to get anything back. It might be useful for me to get an understanding of what's going on behind the scenes in the state of the components that I'm rendering to this page so that I can debug the problems that are happening in my components.
 
 00:22 What I'm going to do is I'm going to google "React Dev Tools". That'll come up with the Chrome Web Store for "React Dev Tools". **There's also React Dev Tools supported for other browsers**, but I'm using Chrome, so I'm going to add this to Chrome. Click on "Add Extension", and the React Developer Tools has been added to Chrome so I can use that by clicking on that icon.

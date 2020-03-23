@@ -1,3 +1,5 @@
+**THE VIDEO IS CRITICAL FOR THIS LESSON.**
+
 Instructor: 00:00 Once you've figured out how React works locally in an index.html, you probably want to build an actual application and the best next place to start is by going to [codesandbox.io](https://codesandbox.io/). CodeSandbox is amazing.
 
 00:14 It's an entire IDE and prototyping tool for rapid web development built right into the browser. It's just like a typical development environment that you would expect from a local development.

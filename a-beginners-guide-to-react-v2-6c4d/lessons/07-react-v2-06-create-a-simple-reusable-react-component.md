@@ -12,7 +12,6 @@ const element = (
 )
 
 ReactDOM.render(element, document.getElementById('root'))
-  
 ```
 
 0:27 But what if I wanted one of these to say, "Hello, World!" and the other to say, "Goodbye, World!" Well, we need to parameterize this somehow, and when we do that in JavaScript, we create a function. I'll make an arrow function here, and we'll accept an object. We'll call it `props`, and then whatever that `props.msg` or props.message value is, is what we'll interpolate into the children prop for this div that we create.
@@ -30,7 +29,6 @@ const element = (
 )
 
 ReactDOM.render(element, document.getElementById('root'))
-  
 ```
 
 1:10 But again, this is not really ergonomic. It doesn't look very good, and one of the benefits to using JSX is the ability for our UI to resemble the declarative nature of HTML.
@@ -57,7 +55,6 @@ const element = (
 )
 
 ReactDOM.render(element, document.getElementById('root'))
-  
 ```
 
 2:25 Now, we're no longer getting that warning. If we look at our compiled code, we're going to see that capital "Message" here, and when we get past to `React.createElement`, we're going to get a capital Message right here, outside of a string.
@@ -68,12 +65,8 @@ ReactDOM.render(element, document.getElementById('root'))
 
 
 ```js
-...
-
 console.log(<div>Hello World</div>)
 console.log(<Message>Hello World</Message>)
-
-...
 ```
 
 3:19 Here we get the props of `children: "Hello World"` and we have `children: Hello World"` in this one as well.
@@ -83,8 +76,6 @@ console.log(<Message>Hello World</Message>)
 3:39 Let's go ahead and cut this out, and we'll rewrite this using JSX. We'll say message, and then use the msg prop, because that's what we're expecting. And then we'll come back here, save that, and everything's working without any errors.
 
 ```js
-...
-
 const Message = props => <div className="message">{props.msg}</div>
 
 const element = (
@@ -93,8 +84,6 @@ const element = (
     <Message msg="Goodbye World" />
   </div>
 )
-
-...
 ```
 
 3:55 If we look at our compiled version of our code, then we'll see that we're calling `React.createElement` with that `Message` function.
@@ -104,8 +93,6 @@ const element = (
 4:12 Then we can rename this one to "children," and those two are functionally equivalent. If we save this, then we'll still get "Hello World!" and "Goodbye, World!" But honestly, one of those looks a little bit nicer to me, so I'm going to switch both of these to use that syntax.
 
 ```js
-...
-
 const Message = props => <div className="message">{props.children}</div>
 
 const element = (
@@ -114,15 +101,11 @@ const element = (
     <Message children="Goodbye World" />
   </div>
 ) 
-
-...
 ```
 
 4:26 What's cool about this is I'm also able to nest these together and pass anything that React can render, which includes the string here, or additional components here, or additional elements here.
 
 ```js
-...
-
 const element = (
   <div className="container">
     <Message>
@@ -132,12 +115,8 @@ const element = (
     </Message>
   </div>
 ) 
-
-...
 ```
 
 4:40 In review of what we did here was we had some code that was being duplicated, and we wanted to reuse that code in multiple places. So, we created our own custom function component which is a function that accepts a props object and returns more React elements.
 
 4:54 We had to make sure that our function component started with a capital letter so that Babel would compile this to pass the function itself to React.createElement rather than the string message to React.createElement. That way, when React renders our element, it knows what function to call.
-
-

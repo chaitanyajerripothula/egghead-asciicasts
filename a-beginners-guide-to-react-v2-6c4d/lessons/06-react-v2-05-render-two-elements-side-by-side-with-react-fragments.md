@@ -10,7 +10,7 @@ Kent C. Dodds: 00:00 Let's say that instead of rendering a div with the class na
 
 01:22 Then we can provide both of our children. Let's put this down here. We'll take our `helloElement`, pass that as the first child, and `worldElement`, pass that as the second child. Then this is going to get our element that we're going to render.
 
-```js
+```html
 <script type="text/babel">
   const helloElement = React.createElement('span', null, 'Hello')
   const worldElement = React.createElement('span', null, 'World')
@@ -24,7 +24,7 @@ Kent C. Dodds: 00:00 Let's say that instead of rendering a div with the class na
 
 01:53 Our root element is this React fragment. We'll do an open bracket and say `React.Fragment`. We'll close that off with `React.Fragment`. Then we'll want to create a span for hello, so "Hello". Then we'll do a space and then "World" and close that off. If we save this, we're going to get the exact same output, and we're using our `React.Fragment` element.
 
-```js
+```html
 <script type="text/babel">
   const element = (
     <React.Fragment>
@@ -42,7 +42,7 @@ Kent C. Dodds: 00:00 Let's say that instead of rendering a div with the class na
 02:49 **Because this is so common to do, JSX has a special syntax for React fragments. That is to simply remove the React fragment and have an open and closing angle bracket**. This is functionally equivalent to what we had before. This syntax is typically what I use whenever I need React fragments.
 
 
-```js
+```html
 <script type="text/babel">
   const element = (
     <>
@@ -50,8 +50,7 @@ Kent C. Dodds: 00:00 Let's say that instead of rendering a div with the class na
     </>
   )
   ReactDOM.render(element, document.getElementById('root'))
-  </script>
-
+</script>
 ```
 
 

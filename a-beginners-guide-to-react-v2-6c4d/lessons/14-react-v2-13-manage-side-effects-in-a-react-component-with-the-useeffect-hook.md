@@ -35,7 +35,7 @@ If we save that, and then open our dev tools and in the application tab here, we
 
 0:54 You'll notice that if I refresh here, I'm not getting that name value loaded into my input, and the value in localStorage is getting cleared. This is because we initialize our state to an empty string, and we don't take the localStorage value into account.
 
-1:09 Then, because we've rendered, we run this useEffect callback, updating the localStorage item for name to that new empty string name. We need to initialize that value to whatever's in localStorage if it's there, and an empty string if it's not.
+1:09 Then, because we've rendered, we run this useEffect callback, updating the localStorage item for name to that new empty string name. We need to initialize that value to whatever is in localStorage if it's there, and an empty string if it's not.
 
 1:23 Here in our `useState`, we'll say `window.localStorage.getItem(name)`, and if that returns null because there's nothing in there, then we'll default that to an empty string. 
 

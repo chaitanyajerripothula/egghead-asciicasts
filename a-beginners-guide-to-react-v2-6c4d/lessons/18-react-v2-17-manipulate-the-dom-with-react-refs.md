@@ -64,7 +64,7 @@ function Tilt({children}) {
 ```jsx
 React.useEffect(() => {
   const tiltNode = tiltRef.current
-  const vanillatiltOptions = {
+  const vanillaTiltOptions = {
     max: 25,
     speed: 400,
     glare: true,
@@ -85,7 +85,7 @@ React.useEffect(() => {
 ```jsx
 React.useEffect(() => {
   const tiltNode = tiltRef.current
-  const vanillatiltOptions = {
+  const vanillaTiltOptions = {
     max: 25,
     speed: 400,
     glare: true,
@@ -107,7 +107,7 @@ React.useEffect(() => {
 ```jsx
 React.useEffect(() => {
   const tiltNode = tiltRef.current
-  const vanillatiltOptions = {
+  const vanillaTiltOptions = {
     max: 25,
     speed: 400,
     glare: true,

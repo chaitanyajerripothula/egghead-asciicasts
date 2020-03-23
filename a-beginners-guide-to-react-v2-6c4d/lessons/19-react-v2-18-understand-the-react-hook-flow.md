@@ -1,4 +1,4 @@
-**THE VIDEO IS VERY HELPFUL FOR THIS LESSON.**
+**THE VIDEO IS CRITICAL FOR THIS LESSON.**
 
 Instructor: 00:00 Sometimes it can be really useful to understand the order in which your code is going to be run when you're using React hooks. I've made this little app that has a checkbox for showing a child. Inside of this box, this will be rendered when that checkbox is checked, and when you click on this button, it's going to increment the count.
 

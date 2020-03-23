@@ -32,21 +32,21 @@ function App() {
 ```js
 function fetchPokemon(name) {
   const pokemonQuery = `
-        query ($name: String) {
-          pokemon(name: $name) {
-            id
-            number
+    query ($name: String) {
+      pokemon(name: $name) {
+        id
+        number
+        name
+        attacks {
+          special {
             name
-            attacks {
-              special {
-                name
-                type
-                damage
-              }
-            }
+            type
+            damage
           }
         }
-      `
+      }
+    }
+  `
 
   return window
     .fetch('https://graphql-pokemon.now.sh', {

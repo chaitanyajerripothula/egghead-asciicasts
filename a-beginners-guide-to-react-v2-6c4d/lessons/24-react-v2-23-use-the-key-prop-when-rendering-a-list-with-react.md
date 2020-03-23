@@ -42,7 +42,7 @@ function App() {
 
 0:30 When we render this, we're going to get this warning that says `each child in a list should have a unique key prop`. What that's talking about is any time you render an array of React elements -- in our case, we're rendering these `li`'s -- each one of those React elements must have a key prop `key={}` associated with it so that React can track these appropriately over time.
 
-0:50 Don't be fooled by the syntax. There's nothing really magic going on here. What we're doing is we're taking an array of `strings`. We're mapping over that array of `strings` and turning that array of `strings` into an array of React elements. Specifically, in our case, these are `li` elements.
+0:50 Don't be fooled by the syntax. There's nothing really magic going on here. What we're doing is we're taking an array of strings. We're mapping over that array of strings and turning that array of strings into an array of React elements. Specifically, in our case, these are `li` elements.
 
 ```js
 <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
@@ -58,7 +58,7 @@ function App() {
 
 1:05 That's the case where you need to have a key prop for every React element in the array, and we're seeing this warning because we don't.
 
-1:12 **To fix this warning** is actually pretty simple. We look at the items that we're iterating over. That is this array right here. Each one of those items has an `ID` that uniquely identifies the item. We're going to use that `ID` as the key prop.
+1:12 To fix this warning is actually pretty simple. We look at the items that we're iterating over. That is this array right here. Each one of those items has an `id` that uniquely identifies the item. We're going to use that `id` as the key prop.
 
 ```js
 const allItems = [
@@ -69,11 +69,19 @@ const allItems = [
 ];
 ```
 
-1:29 Here we'll say, `key={item.id}` If we save this, we don't get that warning anymore.
+1:29 Here we'll say, `key={item.id}`. 
+
+```html
+<li key={item.id}>
+  ...
+</li>
+```
+
+If we save this, we don't get that warning anymore.
 
 1:36 I'm not a huge fan of changing my code just to make warnings go away. I like to understand why that warning is there in the first place. That's why we have this contrived example for me to show you.
 
-1:47 Here, we have a list of each one of these items, where the item itself is the label and then the default `value` for the `input` is the item as well. Then we can remove these and add them.
+1:47 On our webpage, you can see we have a list of each one of these items, where the item itself is the label and then the default `value` for the `input` is the item as well. Then we can remove these and add them.
 
 1:58 As I removed them, if you watched carefully, you might have noticed an interesting bug.
 
@@ -99,17 +107,17 @@ function removeItem(item) {
 
 4:02 Now, if we click remove on the grape, all of the inputs and their labels are correct.
 
-4:08 You'll notice also that if you try to provide some `key` where it's the same `key` for each one of these, you're going to get a warning there because it encountered `two children with the same key`.
+4:08 You'll notice also that if you try to provide some `key` where it's the same `key` for each one of these, you're going to get a warning there because it encountered two children with the same key.
 
-4:20 `Keys need to be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted. The behavior is unsupported and could change in a future version`.
+4:20 **Keys need to be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted. The behavior is unsupported and could change in a future version.**
 
 4:31 So, hard-coding a specific `key` that's duplicated across these elements could lead to some very unexpected behavior. We still experience that bug that we had before.
 
-4:43 The `key` that you provide for each `element` of this array of React `elements` needs to be unique to the item that you're rendering. Typically, that's going to be some sort of `ID`, as in our case.
+4:43 The `key` that you provide for each `element` of this array of React `elements` needs to be unique to the item that you're rendering. Typically, that's going to be some sort of `id`, as in our case.
 
-4:56 Another mistake that I see people make sometimes is they try to use the index as the `key`. While you get rid of the warning, you do not get rid of the bugs. That's because as React is comparing the previous version with the new version, what you're saying is the `element` that was at index four is actually now at index three.
+4:56 Another mistake that I see people make sometimes is they try to use the `index` as the `key`. While you get rid of the warning, you do not get rid of the bugs. That's because as React is comparing the previous version with the new version, what you're saying is the element that was at index four is actually now at index three.
 
-5:16 React doesn't know that. It maintains the state for this `input` to be the same as the one that was at index three the last time rather than being the one that was in index four last time. It's really important that you keep the `key` as something that's unique to the item that this `element` in the array is representing.
+5:16 React doesn't know that. It maintains the state for this input to be the same as the one that was at index three the last time rather than being the one that was in index four last time. It's really important that you keep the `key` as something that's unique to the item that this `element` in the array is representing.
 
 5:36 Here's another little demo that I have at the bottom of this file. I'm just going to uncomment that. We'll save this. We'll get a refresh.
 
@@ -128,7 +136,7 @@ React.useEffect(() => {
 }, []);
 ```
 
-5:57 We have three versions of this, one that renders those items as `inputs` without a `key`, another that renders those items with inputs with a `key` of index, and then the last that renders those items with an appropriate `key`.
+5:57 We have three versions of this, one that renders those items as `inputs` without a `key`, another that renders those items with inputs with a `key` of `index`, and then the last that renders those items with an appropriate `key`.
 
 ```jsx
 <div>
@@ -155,8 +163,8 @@ React.useEffect(() => {
 
 6:11 You'll notice that they're all updating correctly, meaning that they're all jumping around the screen as they should, but the `focus` is not updating correctly.
 
-6:22 I'm focused on apple right now. When that one moves, my `focus` doesn't go around with apple. Also, if I try to `highlight` one of these, then my `highlight` goes away as well.
+6:22 I'm focused on apple right now in the first example, 'Without Key'. When that one moves, my `focus` doesn't go around with apple. Also, if I try to `highlight` one of these, then my `highlight` goes away as well.
 
-6:32 You'll notice that the with `key` as index suffers from the exact same problem. Even though it's not getting the warning in the console, you're still not fixing this bug. Only when you have a `key` in there will your `focus` travel around with the `input` that it's actually associated with because React is able to determine where to move the `focus` as your component updates.
+6:32 You'll notice that the 'With Key as Index' suffers from the exact same problem. Even though it's not getting the warning in the console, you're still not fixing this bug. Only when you have a key in there will your focus travel around with the input that it's actually associated with because React is able to determine where to move the focus as your component updates.
 
 6:55 In review, it's really common in React to take an array and map that array to an array of `elements` and render that directly in your JSX. When you do that, it's really important that you add a `key` to the root React `element` of each `element` in the array so that React can track changes over time and make sure that it preserves the state of each `element` in the array and its descendants.

@@ -21,8 +21,6 @@ const element = <SayHello firstName={false} />
 01:07 We can say, "If type of props at prop name is not equal to a string, then we can return a new error that says, `"Hey, the ${componentName} needs the prop ${propName} to be a string, but you passed a ${typeof props[propName]}."`
 
 ```js
-...
-
 SayHello.propTypes = {
   firstName(props, propName, componentName) {
     if (typeof props[propName] !== 'string') {
@@ -30,8 +28,6 @@ SayHello.propTypes = {
     }
   }
 }
-
-...
 ```
 
 01:35 If we save that, then we can see that warning shows up. Failed prop-type. "Hey, the component SayHello needs the prop first name to be a string, but you passed a boolean."
@@ -39,8 +35,6 @@ SayHello.propTypes = {
 01:46 We could do the same thing for our last name prop. What I'm going to do is pull this out. We'll create a last name prop here and I'm going to make a prop-types object here where we have a string that is that validator that we just created. Then here, we can say first name is PropTypes.string and last name is PropTypes.string.
 
 ```js
-...
-
 const PropTypes = {
   string(props, propName, componentName) {
     if (typeof props[propName] !== 'string') {
@@ -53,8 +47,6 @@ SayHello.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string
 }
-
-...
 ```
 
 02:08 We could add a bunch more validators to the prop-types, for numbers and whatever else you could imagine.
@@ -64,8 +56,6 @@ SayHello.propTypes = {
 02:24 I'll paste that right in here and it's called `prop-types`. With that, it actually creates a global variable here for us called `prop-types` when we're using it as a script like that. It has the same API that we just created, what foresight.
 
 ```js
-...
-
 SayHello.propTypes = {
   firstName: PropTypes.string,
   lastName: PropTypes.string
@@ -81,13 +71,10 @@ const element = <SayHello firstName={false} />
 03:04 **But if you want to make sure that it's required, then you can add a `.isRequired` on both of these**. Save that and now you'll get a warning saying that the first name is the wrong type and the last name is required but wasn't provided.
 
 ```js
-...
-
 SayHello.propTypes = {
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
 }
-...
 ```
 
 03:18 One reasonable concern you might have about prop-types is that it adds a fair amount of code that needs to be run whenever React is rendering your components which may impact performance.
