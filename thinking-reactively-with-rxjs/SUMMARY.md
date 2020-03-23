@@ -11,3 +11,8 @@
 * [Encapsulate complex imperative logic in a simple observable](./lessons/09_egghead-encapsulate-complex-imperative-logic-in-a-simple-observable.md)
 * [Extend your reactive logic using observable-like proxies that delay or drop events](./lessons/10_egghead-extend-your-reactive-logic-using-observable-like-proxies-that-delay-or-drop-events.md)
 * [Use combineLatest to only emit notifications when certain events have happened](./lessons/11_egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened.md)
+* [Maintain self-resetting state in your observable streams using the scan operator](./lessons/12_egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator.md)
+* [Build an event combo observable](./lessons/13_egghead-build-an-event-combo-observable.md)
+* [Use exhaustMap to wait for open combos to finish before starting new ones](./lessons/14_egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones.md)
+* [Simplify usage of your reactive service by building an RxJS operator to manage it for you](./lessons/15_egghead-simplify-usage-of-your-reactive-service-by-building-an-rxjs-operator-to-manage-it-for-you-bbd41d69.md)
+* [Extend promises by adding custom behaviour](./lessons/16_egghead-extend-promises-by-adding-custom-behaviour.md)
