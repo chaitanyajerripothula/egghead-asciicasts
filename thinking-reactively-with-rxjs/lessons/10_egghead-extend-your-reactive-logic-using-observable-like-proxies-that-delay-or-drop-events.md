@@ -33,50 +33,6 @@ Instructor: [00:00] This button here triggers a really quick task that's over in
 
 ### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
 const shouldShowSpinner = currentLoadCount.pipe(
   pairwise(),
   filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
@@ -86,8 +42,8 @@ const shouldShowSpinner = currentLoadCount.pipe(
 
 /*
 The moment the spinner becomes active...
-    Switch to waiting for 2s before showing it
-    But cancel if it becomes inactive again in the meantime
+  Switch to waiting for 2s before showing it
+  But cancel if it becomes inactive again in the meantime
 */
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
@@ -95,52 +51,11 @@ The moment the spinner becomes active...
 shouldShowSpinner
   .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
   .subscribe();
-
-export default {};
 ```
 
 [01:47] First, let's rename these to be more indicative of what they actually do, `spinnerDeactivated` and `spinnerActivated`. For the new implementation of this, the moment the spinner becomes active, switch to waiting for two seconds before emitting.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
 
 const spinnerDeactivated = currentLoadCount.pipe(
@@ -156,95 +71,21 @@ const spinnerActivated = currentLoadCount.pipe(
 
 /*
 The moment the spinner becomes active...
-    Switch to waiting for 2s before showing it
-    But cancel if it becomes inactive again in the meantime
+  Switch to waiting for 2s before showing it
+  But cancel if it becomes inactive again in the meantime
 */
 
 const shouldShowSpinner = spinnerActivated.pipe(
   switchMap(() => timer(2000))
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [02:05] We don't want to let the timer fire after its two seconds are up if the spinner became inactive in the meantime. I'll `takeUntil()` the spinner is deactivated. Finally, I'll need to make sure that I'm using `spinnerDeactivated` in here as well. Let's test this.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-The moment the spinner becomes active...
-    Switch to waiting for 2s before showing it
-    But cancel if it becomes inactive again in the meantime
-*/
-
 const shouldShowSpinner = spinnerActivated.pipe(
   switchMap(() => timer(2000).pipe(takeUntil(spinnerDeactivated)))
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(spinnerDeactivated))))
-  .subscribe();
-
-export default {};
 ```
 
 [02:21] I'll press it once, no spinner, even after two seconds. I'll press this a few times and the spinner now shows and keeps showing because there have been enough of these overlapping tasks over a period of two seconds to warrant showing it.

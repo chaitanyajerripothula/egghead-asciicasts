@@ -2,29 +2,10 @@
 
 [Video link](https://www.egghead.io/lessons/egghead-extend-promises-by-adding-custom-behaviour)
 
-Instructor: [00:00] Another common task we might want to track is a *Promise*. Since *Promises* don't have *Operators*, let's create a custom *Promise*. I'll go back to our `Extensions.js` file and paste in our use case. I'll call our new *Promise* `PromiseWithLoadingProgress`. It will extend the native `Promise`.
+Instructor: [00:00] Another common task we might want to track is a *Promise*. Since *Promises* don't have *Operators*, let's create a custom *Promise*. I'll go back to our `Extensions.js` file and paste in our use case. I'll call our new Promise `PromiseWithLoadingProgress`. It will extend the native `Promise`.
 
 ### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
 /*
   new Promise(resolve => {
     setTimeout(() => {
@@ -41,36 +22,7 @@ class PromiseWithLoadingProgress extends Promise {
 
 [00:19] Unlike *Observables*, *Promises* are eager, which means that the moment they are constructed, the work they need to do will also start. We can also assume that whenever our custom *Promise* is constructed, a new task has started (`newTaskStarted()`) as well, and we can tell our spinner service about it.
 
-### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
-/*
-  new Promise(resolve => {
-    setTimeout(() => {
-      existingTaskCompleted();
-      resolve();
-    }, 300);
-  });
-*/
-
 class PromiseWithLoadingProgress extends Promise {
   constructor() {
     newTaskStarted();
@@ -94,36 +46,7 @@ class PromiseWithLoadingProgress extends Promise {
 
 [01:33] Let's do the first step. Let's get the original resolve and reject from the *Promise*. Because we're extending from another class, the *Promise* class, we have access to the `super()` keyword, which will accept whatever *Promises* normally accept in their *constructor* -- a callback that will be invoked with the `originalResolve` and `originalReject`.
 
-### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
-/*
-  new Promise(resolve => {
-    setTimeout(() => {
-      existingTaskCompleted();
-      resolve();
-    }, 300);
-  });
-*/
-
 class PromiseWithLoadingProgress extends Promise {
   constructor() {
     super((originalResolve, originalReject) => {
@@ -136,38 +59,9 @@ class PromiseWithLoadingProgress extends Promise {
 
 [01:54] Now that we have access to the original resolve and original reject, let's do the second step, wrap them in our spy functions.
 
-[02:02] I'll create a new *function*, `resolveSpy`, which will accept a variable number of arguments. It will call the `originalResolve` with those same arguments. Because whenever this will be called, it will mean that our *Promise* has resolved, we can call `taskCompleted` in it as well, which will remove our previously started task from the spinner service.
+[02:02] I'll create a new *function*, `resolveSpy`, which will accept a variable number of arguments. It will call the `originalResolve` with those same arguments. Because whenever `resolveSpy` will be called, it will mean that our *Promise* has resolved, we can call `taskCompleted` in it as well, which will remove our previously started task from the spinner service.
 
-### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
-/*
-  new Promise(resolve => {
-    setTimeout(() => {
-      existingTaskCompleted();
-      resolve();
-    }, 300);
-  });
-*/
-
 class PromiseWithLoadingProgress extends Promise {
   constructor() {
     super((originalResolve, originalReject) => {
@@ -182,36 +76,7 @@ class PromiseWithLoadingProgress extends Promise {
 
 [02:24] I'll also create a `rejectSpy` which, again, will get called with a variable number of arguments. We'll call the `originalReject()` to the same arguments. We'll consider a rejection a task completion as well (`existingTaskCompleted()`).
 
-### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
-/*
-  new Promise(resolve => {
-    setTimeout(() => {
-      existingTaskCompleted();
-      resolve();
-    }, 300);
-  });
-*/
-
 class PromiseWithLoadingProgress extends Promise {
   constructor() {
     super((originalResolve, originalReject) => {
@@ -228,38 +93,9 @@ class PromiseWithLoadingProgress extends Promise {
 }
 ```
 
-[02:36] Finally, we need to provide a way for the developer to give us the callback so we can then call it with our *resolve* and *reject* spies. When the developer calls our custom *Promise*, they'll pass in the callback in the constructor. I'll just accept a `callback` in here.
+[02:36] Finally, we need to provide a way for the developer to give us the callback so we can then call it with our *resolve* and *reject* spies. When the developer calls our custom *Promise*, they'll pass in the callback in the constructor. I'll just accept a `callback` in our `constructor`.
 
-### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
-/*
-  new Promise(resolve => {
-    setTimeout(() => {
-      existingTaskCompleted();
-      resolve();
-    }, 300);
-  });
-*/
-
 class PromiseWithLoadingProgress extends Promise {
   constructor(callback) {
     super((originalResolve, originalReject) => {
@@ -282,38 +118,9 @@ class PromiseWithLoadingProgress extends Promise {
 
 [03:21] Then, whenever the developer will call resolve, which will call our custom spy, the *originalResolve* will get invoked. The *Promise* will continue to work in the same way, and the task that originally started when the *Promise* was constructed will now get completed. The same thing we do with reject.
 
-[03:38] Now we're done. Let's use this. I'll first `export` our new *Promise*. I'll then go back to our page responsible for our second tab, remove all the references to the *TaskProgressService*, and I'll `import` our new *Promise* (`PromiseWithLoadingProgress`). I'll replace it here and here and get rid of these invocations as we don't need them anymore.
+[03:38] Now we're done. Let's use this. I'll first `export` our new *Promise*. I'll then go back to `FastExample.js` which is responsible for our second tab, remove all the references to the *TaskProgressService*, and I'll `import` our new *Promise* (`PromiseWithLoadingProgress`). I'll replace it here and here and get rid of these invocations as we don't need them anymore.
 
-### Extensions.js
 ```js
-import {
-  existingTaskCompleted,
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";
-import { Observable } from "rxjs";
-
-export function showLoadingStatus() {
-  return source => {
-    return new Observable(subscriber => {
-      newTaskStarted();
-      const sourceSubscription = source.subscribe(subscriber);
-      return () => {
-        sourceSubscription.unsubscribe();
-        existingTaskCompleted();
-      };
-    });
-  };
-}
-
-/*
-  new Promise(resolve => {
-    setTimeout(() => {
-      existingTaskCompleted();
-      resolve();
-    }, 300);
-  });
-*/
-
 export class PromiseWithLoadingProgress extends Promise {
   constructor(callback) {
     super((originalResolve, originalReject) => {
@@ -332,8 +139,6 @@ export class PromiseWithLoadingProgress extends Promise {
 
 ### FastExample.js
 ```js
-import React from "react";
-import Button from "./presentational/Button";
 import { PromiseWithLoadingProgress } from "../lesson-code/Extensions";
 
 const doVeryQuickWork = () => {
@@ -351,15 +156,6 @@ const doAlmostQuickWork = () => {
     }, 2200);
   });
 };
-
-const SlowExample = () => {
-  return (
-    <>
-      <Button onClick={doVeryQuickWork}>QUICK task - 300ms</Button>
-      <Button onClick={doAlmostQuickWork}>Almost quick work - 2200ms</Button>
-    </>
-  );
-}
 ```
 
 [03:59] Now the developer can just use *Promises* as they normally would, but they'll get the added benefit of the underlying task being tracked with a spinner. I'll save, go back to my app, and I'm just going to launch a bunch of these. When the tasks start finishing, the spinner disappears.

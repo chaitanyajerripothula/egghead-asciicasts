@@ -16,32 +16,30 @@ Instructor: [00:00] Our virtual manager now tells us that our internal QA team n
 ### EventCombo.js
 ```js
 /*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
+  whenever somebody starts a combo
+    keep taking(listening) for the rest of the combo keys
 */
 ```
 
 [01:00] Well, time is the first one. If the user hasn't finished the combo within a certain time limit, the combo will fail. Let's write that out, `until the timer has run out`. Let's say that the user starts the combo again. They press the first letter in the combo, then they press the second, S, the third, D, but then on the fourth, they press W, which is the wrong key, so they miss out.
 
-### EventCombo.js
 ```js
 /*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
+  whenever somebody starts a combo
+    keep taking(listening) for the rest of the combo keys
+      until the timer has run out
 */
 ```
 
 [01:24] That's our second condition, combo was not followed correctly. Write that out, `while the combo is being followed correctly`. Now, the user presses A again to start the combo a third time. They then quickly press S, D, and F to complete the combo. Our third condition can be, `and until they've reached the end of the combo`.
 
-### EventCombo.js
 ```js
 /*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until they've reached the end of the combo
+  whenever somebody starts a combo
+    keep taking(listening) for the rest of the combo keys
+      until the timer has run out
+      while the combo is being followed correctly
+      and until they've reached the end of the combo
 */
 ```
 
@@ -54,27 +52,25 @@ Instructor: [00:00] Our virtual manager now tells us that our internal QA team n
 
 [02:16] Three is actually the total length of the combo, which is four minus one, because we don't count the first letter. We can go back and revise our condition to, `and until we got (comboLength - 1) keys back`.
 
-### EventCombo.js
 ```js
 /*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
+  whenever somebody starts a combo
+    keep taking(listening) for the rest of the combo keys
+      until the timer has run out
+      while the combo is being followed correctly
+      and until we got (comboLength - 1) keys back
 */
 ```
 
 [02:31] I'll now declare an *Observable* called `anyKeyPresses`. I'll use the `fromEvent()` *Observable* factory that allows us to pass a DOM element and the event we want to listen for. In our case, we want to listen for key presses (`'keypress'`) on the whole `document` object. Because we get raw DOM events from this, we're going to extract the underlying `key` from each `event`.
 
-### EventCombo.js
 ```js
 /*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
+  whenever somebody starts a combo
+    keep taking(listening) for the rest of the combo keys
+      until the timer has run out
+      while the combo is being followed correctly
+      and until we got (comboLength - 1) keys back
 */
 
 const anyKeyPresses = fromEvent(document, 'keypress').pipe(
@@ -84,16 +80,7 @@ const anyKeyPresses = fromEvent(document, 'keypress').pipe(
 
 [02:54] I'm also going to create an *Observable* factory called `keyPressed`, which is going to take in a `key` as the input and it's going to return an *Observable* that emits anytime that specific key is pressed. Cool. Now that we have our building blocks, we can start assembling them to solve our problem.
 
-### EventCombo.js
 ```js
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
 const anyKeyPresses = fromEvent(document, 'keypress').pipe(
   map(event => event.key)
 )
@@ -105,22 +92,13 @@ function keyPressed(key) {
 
 [03:11] To make this truly useful and not lock it down to a single set of keys, we're going to have a *function* that can be invoked with an array of keys and will return an *Observable* that will emit anytime a combo involving these four keys in order has happened. I'll define the `function` and move our requirements right above it so we can keep track of them.
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
 /*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
+  whenever somebody starts a combo
+    keep taking(listening) for the rest of the combo keys
+      until the timer has run out
+      while the combo is being followed correctly
+      and until we got (comboLength - 1) keys back
 */
 
 function keyCombo(keyCombo) {
@@ -132,24 +110,7 @@ const comboTriggered = keyCombo(["a", "s", "d", "f"])
 
 [03:33] The `comboInitiator` will be the first letter from our combo. Whenever the `comboInitiator` is pressed, we want to `switchMap()` to another *Observable* that only becomes alive when the combo has started.
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
 function keyCombo(keyCombo) {
   const comboInitiator = keyCombo[0];
   return keyPressed(comboInitiator).pipe(
@@ -158,30 +119,11 @@ function keyCombo(keyCombo) {
     })
   )
 }
-
-const comboTriggered = keyCombo(["a", "s", "d", "f"])
 ```
 
 [03:46] Once we're in combo mode, we want to continue listening for key presses and `takeUntil` our timer has expired. In this case, if the user hasn't completed the combo within three seconds, this inner *Observable* will be disposed of and they're going to need to start again from scratch and keep taking while the combos being followed correctly.
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
 function keyCombo(keyCombo) {
   const comboInitiator = keyCombo[0];
   return keyPressed(comboInitiator).pipe(
@@ -193,30 +135,11 @@ function keyCombo(keyCombo) {
     })
   )
 }
-
-const comboTriggered = keyCombo(["a", "s", "d", "f"])
 ```
 
-[04:08] `takeWhile()` the key that was pressed (`keyPressed`) matches the combo (`keyCombo`). *takeWhile()* is an operator that keeps its source alive, as long as the *function* passed to it keeps returning true. It calls this *function* with each new element from the source, but it also passes in the index from the emission starting from zero.
+[04:08] `takeWhile()` the key that was pressed `keyPressed` matches the combo `keyCombo`. *takeWhile()* is an operator that keeps its source alive, as long as the *function* passed to it keeps returning true. It calls this *function* with each new element from the source, but it also passes in the index from the emission starting from zero.
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
 function keyCombo(keyCombo) {
   const comboInitiator = keyCombo[0];
   return keyPressed(comboInitiator).pipe(
@@ -229,32 +152,13 @@ function keyCombo(keyCombo) {
     })
   )
 }
-
-const comboTriggered = keyCombo(["a", "s", "d", "f"])
 ```
 
 [04:28] The reason we do `index + 1` in here is because the first element of our inner combo will be at index one. The first time this is called, index will be zero. User presses A, we start the inner combo. They then press S, this gets called with S and index zero. We check if S matches the letter that is at position one in our combo, which it is and so on for the rest of the keys.
 
 [04:57] Finally, we want to *takeUntil* we get *comboLength - 1* keys back. `take(keyCombo.length - 1)`. *take()* keeps its source alive until it receives *keyCombo.length - 1* emissions. After that, it just terminates the source.
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
 function keyCombo(keyCombo) {
   const comboInitiator = keyCombo[0];
   return keyPressed(comboInitiator).pipe(
@@ -268,44 +172,11 @@ function keyCombo(keyCombo) {
     })
   )
 }
-
-const comboTriggered = keyCombo(["a", "s", "d", "f"])
 ```
 
 [05:15] Let's try this out. I'll declare an `interval`, which will emit every second and I'll keep taking values from it until the combo is triggered (`comboTriggered`). I'll `subscribe` to `console.log(x)` notifications and I'll also log when it completes.
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
-function keyCombo(keyCombo) {
-  const comboInitiator = keyCombo[0];
-  return keyPressed(comboInitiator).pipe(
-    switchMap(() => {
-      //WE ARE NOW IN COMBO MODE
-      return anyKeyPresses.pipe(
-        takeUntil(timer(3000)),
-        takeWhile((keyPressed, index) => keyCombo[index + 1] === keyPressed),
-        take(keyCombo.length - 1)
-      )
-    })
-  )
-}
-
 const comboTriggered = keyCombo(["a", "s", "d", "f"])
 
 interval(1000).pipe(
@@ -316,42 +187,26 @@ interval(1000).pipe(
 })
 ```
 
-[05:30] Just so you can see what I'm pressing on the keyboard, I'll log out values anytime I press a key. If I bring in the app, you can see that we get values each second. I'll press A, S, D and F and we can see that the timer definitely stopped. We also see that it completed only after the second letter S and not when the full combo finished.
+[05:30] Just so you can see what I'm pressing on the keyboard, I'll log out values anytime I press a key. Also don't forget our imports.
 
-### EventCombo.js
 ```js
+import { fromEvent, timer, interval } from "rxjs";
+import {
+  map,
+  tap,
+  filter,
+  switchMap,
+  takeUntil,
+  takeWhile,
+  take
+} from "rxjs/operators";
+
 const anyKeyPresses = fromEvent(document, 'keypress').pipe(
   map(event => event.key)
   tap(console.log)
 )
 
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
-function keyCombo(keyCombo) {
-  const comboInitiator = keyCombo[0];
-  return keyPressed(comboInitiator).pipe(
-    switchMap(() => {
-      //WE ARE NOW IN COMBO MODE
-      return anyKeyPresses.pipe(
-        takeUntil(timer(3000)),
-        takeWhile((keyPressed, index) => keyCombo[index + 1] === keyPressed),
-        take(keyCombo.length - 1)
-      )
-    })
-  )
-}
-
-const comboTriggered = keyCombo(["a", "s", "d", "f"])
+...
 
 interval(1000).pipe(
   takeUntil(comboTriggered)
@@ -360,6 +215,8 @@ interval(1000).pipe(
   complete: () => console.log("COMPLETED")
 })
 ```
+
+If I bring in the app, you can see that we get values each second. I'll press A, S, D and F and we can see that the timer definitely stopped. We also see that it completed only after the second letter S and not when the full combo finished.
 
 ### Console Output
 ![Console Output](../images/egghead-build-an-event-combo-observable-console-output.png)
@@ -379,25 +236,7 @@ interval(1000).pipe(
 ### Our Plan
 ![Our Plan](../images/egghead-build-an-event-combo-observable-our-plan.png)
 
-### EventCombo.js
 ```js
-const anyKeyPresses = fromEvent(document, 'keypress').pipe(
-  map(event => event.key)
-  tap(console.log)
-)
-
-function keyPressed(key) {
-  return anyKeyPresses.pipe(filter(pressedKey => pressedKey === key));
-}
-
-/*
-    whenever somebody starts a combo
-        keep taking(listening) for the rest of the combo keys
-            until the timer has run out
-            while the combo is being followed correctly
-            and until we got (comboLength - 1) keys back
-*/
-
 function keyCombo(keyCombo) {
   const comboInitiator = keyCombo[0];
   return keyPressed(comboInitiator).pipe(
@@ -412,15 +251,6 @@ function keyCombo(keyCombo) {
     })
   )
 }
-
-const comboTriggered = keyCombo(["a", "s", "d", "f"])
-
-interval(1000).pipe(
-  takeUntil(comboTriggered)
-).subscribe({
-  next: x => console.log(x),
-  complete: () => console.log("COMPLETED")
-})
 ```
 
 [06:51] If these two conditions don't terminate our combo prematurely, we're going to keep skipping elements right until we get to the last one. If that last one is correct, we're going to take it and emit it as a notification. We should now only be triggering the *takeUntil* if we successfully got to the end of the combo.

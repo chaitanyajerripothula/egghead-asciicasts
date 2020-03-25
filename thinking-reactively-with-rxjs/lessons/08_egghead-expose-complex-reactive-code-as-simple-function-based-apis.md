@@ -2,9 +2,8 @@
 
 [Video link](https://www.egghead.io/lessons/egghead-expose-complex-reactive-code-as-simple-function-based-apis)
 
-Instructor: [00:00] Now that we solved our problem, we can go back and focus on these. How do we make them emit whenever a task starts or complete? Tasks come in all shapes and sizes. It might be an *Observable* that someone's just *Subscribed* to and we're waiting for it to emit or it might be a `setTimeout()` or even a `fetch()` request that's been fired off to some server.
+Instructor: [00:00] Now that we solved our problem, we can go back and focus on our Observables. How do we make them emit whenever a task starts or complete? Tasks come in all shapes and sizes. It might be an *Observable* that someone's just *Subscribed* to and we're waiting for it to emit or it might be a `setTimeout()` or even a `fetch()` request that's been fired off to some server.
 
-### Task Examples
 ```js
 /*
   timer(6000).subscribe(...)
@@ -17,17 +16,6 @@ Instructor: [00:00] Now that we solved our problem, we can go back and focus on 
 
 ### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
 /*
   timer(6000).subscribe(...)
   setTimeout(() => ..., 6000)
@@ -39,69 +27,14 @@ export function newTaskStarted() {
 }
 
 const taskStarts = new Observable();
-const taskCompletions = new Observable();
-const showSpinner = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When does the loader need to hide?
-
-When the count of async tasks goes to 0
-*/
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When the spinner needs to show
-    → show the spinner..until it's time to hide it
-*/
-
-shouldShowSpinner.pipe(
-  switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner)))
-).subscribe();
-
-export default {};
 ```
 
-[00:34] All somebody needs to do to tell us that a task has started is to `import` and call this. Let's do one for tasks ending as well. How do we tell this *Observable* to emit whenever this *function* is called? We can just use subjects (`Subject()`) and they've already been imported from the top-level package.
+[00:34] All somebody needs to do to tell us that a task has started is to `import` and call this. Let's do one for tasks ending as well. How do we tell this *Observable* to emit whenever this *function* is called? We can just use subjects `Subject()` and they've already been imported from the top-level package.
 
-### TaskProgressService.js
 ```js
 import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
+
+...
 
 /*
   timer(6000).subscribe(...)
@@ -116,72 +49,11 @@ export function newTaskStarted() {
 export function existingTaskCompleted() {
 
 }
-
-const taskStarts = new Subject();
-const taskCompletions = new Subject();
-const showSpinner = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When does the loader need to hide?
-
-When the count of async tasks goes to 0
-*/
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When the spinner needs to show
-    → show the spinner..until it's time to hide it
-*/
-
-shouldShowSpinner.pipe(
-  switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner)))
-).subscribe();
-
-export default {};
 ```
 
 [00:50] A `Subject()` is both an `Observable()` and an observer. In other words, whenever we call `.next()` on this, it will also cause the `Observable()` to emit a notification to whoever is *Subscribed* to it. I'll just do the same for `taskCompletions` as well. Let's look at our project now.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
 /*
   timer(6000).subscribe(...)
   setTimeout(() => ..., 6000)
@@ -195,55 +67,6 @@ taskStarts.next();
 export function existingTaskCompleted() {
   taskCompletions.next();
 }
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-const showSpinner = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When does the loader need to hide?
-
-When the count of async tasks goes to 0
-*/
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When the spinner needs to show
-    → show the spinner..until it's time to hide it
-*/
-
-shouldShowSpinner.pipe(
-  switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner)))
-).subscribe();
-
-export default {};
 ```
 
 [01:05] I have here some `components`. I'll just open up the `SlowExample.js` and also open the app to the side. These two buttons here are responsible for the two buttons on the first step. Whenever you click on the button, it *Subscribes* to an *Observable* that emits after three seconds or six seconds for the longer one.

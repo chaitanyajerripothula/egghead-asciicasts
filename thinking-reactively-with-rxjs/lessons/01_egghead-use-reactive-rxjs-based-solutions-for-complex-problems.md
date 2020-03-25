@@ -24,7 +24,8 @@ Instructor: [00:00] Whenever I have to build a new feature, or I get a requireme
 
 [01:53] As with everything in software development, if you build something simple, the case for using RxJS isn't that big, but the decisions you make early will have a compound effect the more your app grows.
 
-[02:03] The moment you introduce the concept of time in an app, however simple it may be initially, there's a chance that future requirements will build on that concept. You'll have ever more complex scenarios where you have to consider time, as we shall see.
-
 ### Time Diagram
 ![Time Diagram](../images/egghead-use-reactive-rxjs-based-solutions-for-complex-problems-time-diagram.png)
+
+
+[02:03] The moment you introduce the concept of time in an app, however simple it may be initially, there's a chance that future requirements will build on that concept. You'll have ever more complex scenarios where you have to consider time, as we shall see.

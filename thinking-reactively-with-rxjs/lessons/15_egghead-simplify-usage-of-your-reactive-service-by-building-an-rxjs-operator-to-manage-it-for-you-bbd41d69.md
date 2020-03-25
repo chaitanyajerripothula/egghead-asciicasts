@@ -12,45 +12,11 @@ Instructor: [00:00] We've built our service and it works great, but has a very, 
 
 ### SlowExample.js
 ```js
-import React from "react";
-import { timer } from "rxjs";
-import Button from "./presentational/Button";
-import "../lesson-code/Extensions";
-import {
-  existingTaskCompleted;
-  newTaskStarted
-} from "../lesson-code/TaskProgressService";   
-
 const slowObservable = timer(3000).pipe(showLoadingStatus());
 const verySlowObservable = timer(6000);
-
-const doWork = () => {
-  newTaskStarted();
-  slowObservable.subscribe(() => {
-    existingTaskCompleted();
-  });
-};
-
-const doLongWork = () => {
-  newTaskStarted();
-  verySlowObservable.subscribe(() => {
-    existingTaskCompleted();
-  });
-};
-
-const SlowExample = () => {
-  return (
-    <>
-      <Button onClick={doWork}>Start slow task - 3s</Button>
-      <Button onClick={doLongWork}>Start very slow task - 6s</Button>
-    </>
-  );
-}
-
-...
 ```
 
-[00:57] Let's build an *Operator*. All an *Operator* is is a *function* that takes an outsource *Observable* and returns another *Observable*. If I declare an `interval` that emits every half a second and we just take the first two values from it and then we `.subscribe`... I'll log `next:` notifications as well as completion events.
+[00:57] Let's build an *Operator*. All an *Operator* is is a *function* that takes a `source` Observable and returns another `Observable`. If I declare an `interval` that emits every half a second and we just take the first two values from it and then we `.subscribe`. I'll log `next:` notifications as well as completion events.
 
 ### Extensions.js
 ```js
@@ -59,17 +25,16 @@ function showLoadingStatus(source) {
 }
 
 interval(500).pipe(
-    take(2)
-    .subscribe({
-        next: x => console.log("next: ", x),
-        complete: () => console.log("COMPLETED!")
-    })
+  take(2)
+  .subscribe({
+    next: x => console.log("next: ", x),
+    complete: () => console.log("COMPLETED!")
+  })
 )
 ```
 
-[01:20] If I wanted to track this *Observable* with my newly created *Operator*, I could just add it on here. Now my *source* would just be this, but because the convention is to make these *Operators* configurable by calling them as you pass them in the pipe, we're going to wrap this in a *function* that returns our *Operator* *function*. I know we're not really passing anything to this, but we're just following the convention.
+[01:20] If I wanted to track this Observable, `interval`, with my newly created *Operator*, I could just add it in our `.pipe`. Now my source would just be this, but because the convention is to make these *Operators* configurable by calling them as you pass them in the pipe, we're going to wrap our `return` in a function that returns our Operator function. I know we're not really passing anything to this, but we're just following the convention.
 
-### Extensions.js
 ```js
 function showLoadingStatus() {
   return source => {
@@ -79,17 +44,16 @@ function showLoadingStatus() {
 
 interval(500)
   .pipe(
-      take(2),
-      showLoadingStatus())
+    take(2),
+    showLoadingStatus())
   .subscribe({
     next: x => console.log("next: ", x),
     complete: () => console.log("COMPLETED!")
     })
 ```
 
-[01:48] I'll now `import` our task *functions* from our service. If you remember from earlier, the *function* we pass to the *Observable* constructor will get called any time somebody *subscribes* to this *Observable*. This is a perfect place to call our new taskStarted function.
+[01:48] I'll now `import` our task functions from our service. If you remember from earlier, the *function* we pass to the *Observable* constructor will get called any time somebody *subscribes* to this *Observable*. This is a perfect place to call our new `taskStarted` function.
 
-### Extensions.js
 ```js
 import {
     existingTaskCompleted,
@@ -99,119 +63,70 @@ import {
 function showLoadingStatus() {
   return source => {
     return new Observable(() => {
-        // I'VE BEEN SUBSCRIBED TO
-        newTaskStarted();
+      // I'VE BEEN SUBSCRIBED TO
+      newTaskStarted();
     });
   };
 }
-
-interval(500)
-  .pipe(
-      take(2),
-      showLoadingStatus())
-  .subscribe({
-    next: x => console.log("next: ", x),
-    complete: () => console.log("COMPLETED!")
-    })
 ```
 
-[02:05] The second thing we want to do is we want to make sure this *Operator* passes all notifications it gets from the *source* downwards to its subscribers. To listen for notifications from the source, I'll just *subscribe* to it. Whenever somebody *subscribes* to our returned *Observable*, we'll get a reference to that `subscriber` here. Now I can just pass all the events from the *source* down to our `subscriber`.
+[02:05] The second thing we want to do is we want to make sure this Operator, `showLoadingStatus()`, passes all notifications it gets from the *source* downwards to its subscribers. To listen for notifications from the source, I'll just `subscribe` to it. Whenever somebody *subscribes* to our returned *Observable*, we'll get a reference to that `subscriber`. Now I can just pass all the events from the *source* down to our `subscriber`.
 
-### Extensions.js
 ```js
-import {
-    existingTaskCompleted,
-    newTaskStarted
-  } from "../lesson-code/TaskProgressService";
-
 function showLoadingStatus() {
   return source => {
     return new Observable((subscriber) => {
-        // I'VE BEEN SUBSCRIBED TO
-        newTaskStarted();
-        source.subscribe(subscriber);
+      // I'VE BEEN SUBSCRIBED TO
+      newTaskStarted();
+      source.subscribe(subscriber);
     });
   };
 }
-
-interval(500)
-  .pipe(
-      take(2),
-      showLoadingStatus())
-  .subscribe({
-    next: x => console.log("next: ", x),
-    complete: () => console.log("COMPLETED!")
-    })
 ```
 
-[02:31] Finally, we need to make sure we *unsubscribe* from this whenever our *Observable* gets disposed of. I'll store a reference to the subscription. In the disposable *function* we learned about earlier, I'll just call `unsubscribe()` on our subscription (`sourceSubscription`).
+[02:31] Finally, we need to make sure we *unsubscribe* from this whenever our *Observable* gets disposed of. I'll store a reference to the subscription, `sourceSubscription`. In the disposable *function* we learned about earlier, I'll just call `unsubscribe()` on our subscription (`sourceSubscription`).
 
-### Extensions.js
 ```js
-import {
-    existingTaskCompleted,
-    newTaskStarted
-  } from "../lesson-code/TaskProgressService";
-
 function showLoadingStatus() {
   return source => {
     return new Observable((subscriber) => {
-        // I'VE BEEN SUBSCRIBED TO
-        newTaskStarted();
-        const sourceSubscription = source.subscribe(subscriber);
-        return () => {
-            sourceSubscription.unsubscribe();
-            existingTaskCompleted();
-        }
+      // I'VE BEEN SUBSCRIBED TO
+      newTaskStarted();
+      const sourceSubscription = source.subscribe(subscriber);
+      return () => {
+        sourceSubscription.unsubscribe();
+        existingTaskCompleted();
+      }
     });
   };
 }
-
-interval(500)
-  .pipe(
-      take(2),
-      showLoadingStatus())
-  .subscribe({
-    next: x => console.log("next: ", x),
-    complete: () => console.log("COMPLETED!")
-    })
 ```
 
-[02:46] Since we started the task here and the event that this *Observable* is disposed of, we also want to complete the task. Otherwise, we run the risk of the spinner staying on the screen forever. Let me just add some `console.log()` so we can see when *taskStarted* is getting called and when *taskComplete* is getting called. I'm also going to `import` all the RxJS tokens that we've missed.
+[02:46] Since we started the task in our Observable and the event that this *Observable* is disposed of, we also want to complete the task with `existingTaskcompleted()`. Otherwise, we run the risk of the spinner staying on the screen forever. Let me just add some `console.log()` so we can see when *taskStarted* is getting called and when *taskComplete* is getting called. I'm also going to `import` all the RxJS tokens that we've missed.
 
-### Extensions.js
 ```js
 import {
-    existingTaskCompleted,
-    newTaskStarted
-  } from "../lesson-code/TaskProgressService";
+  existingTaskCompleted,
+  newTaskStarted
+} from "../lesson-code/TaskProgressService";
 import { Observable, interval } from "rxjs";
 import { take } from "rxjs/operators";
 
 function showLoadingStatus() {
   return source => {
     return new Observable((subscriber) => {
-        // I'VE BEEN SUBSCRIBED TO
-        newTaskStarted();
-        console.log("task start...")
-        const sourceSubscription = source.subscribe(subscriber);
-        return () => {
-            sourceSubscription.unsubscribe();
-            existingTaskCompleted();
-            console.log("task complete...")
-        }
+      // I'VE BEEN SUBSCRIBED TO
+      newTaskStarted();
+      console.log("task start...")
+      const sourceSubscription = source.subscribe(subscriber);
+      return () => {
+        sourceSubscription.unsubscribe();
+        existingTaskCompleted();
+        console.log("task complete...")
+      }
     });
   };
 }
-
-interval(500)
-  .pipe(
-      take(2),
-      showLoadingStatus())
-  .subscribe({
-    next: x => console.log("next: ", x),
-    complete: () => console.log("COMPLETED!")
-    })
 ```
 
 [03:09] If I bring in the console, we can see that we correctly called *taskStarted* whenever we *subscribed* to it. We then get the two notifications from the interval. Because we only take the first two, we then get a complete notification.
@@ -221,37 +136,28 @@ interval(500)
 
 [03:24] What's interesting is that even though we don't explicitly *unsubscribe* from this one, we still get our *taskComplete* invocation inside our disposal *function*. That's because whenever our *Observer* gets a complete notification, it's going to immediately *unsubscribe* from its source *Observable*, which is going to trigger the disposal *function* in our *Operator*. Awesome.
 
-[03:48] Let me just remove the debugging statements and I'll `export` our *Operator*. Then I'll go back to my page. I'll remove any reference to our *service* and instead I'll just `import` the *Operator*. I'll add it to this *Observable* as well. Finally, I'll just remove all the extra invocations to the old *service*.
+[03:48] Let me just remove the debugging statements and I'll `export` our *Operator*. 
 
-### Extensions.js
 ```js
-import {
-    existingTaskCompleted,
-    newTaskStarted
-  } from "../lesson-code/TaskProgressService";
-import { Observable, interval } from "rxjs";
-import { take } from "rxjs/operators";
-
 export function showLoadingStatus() {
   return source => {
     return new Observable((subscriber) => {
-        // I'VE BEEN SUBSCRIBED TO
-        newTaskStarted();
-        const sourceSubscription = source.subscribe(subscriber);
-        return () => {
-            sourceSubscription.unsubscribe();
-            existingTaskCompleted();
-        }
+      // I'VE BEEN SUBSCRIBED TO
+      newTaskStarted();
+      const sourceSubscription = source.subscribe(subscriber);
+      return () => {
+        sourceSubscription.unsubscribe();
+        existingTaskCompleted();
+      }
     });
   };
 }
 ```
 
+Then I'll go back to `SlowExample.js`. I'll remove any reference to our *service* and instead I'll just `import { showLoadingStatus } from "../lesson-code/Extensions"`. I'll add it to this *Observable* as well. Finally, I'll just remove all the extra invocations to the old service.
+
 ### SlowExample.js
 ```js
-import React from "react";
-import { timer } from "rxjs";
-import Button from "./presentational/Button";
 import { showLoadingStatus } from "../lesson-code/Extensions";  
 
 const slowObservable = timer(3000).pipe(showLoadingStatus());
@@ -264,17 +170,6 @@ const doWork = () => {
 const doLongWork = () => {
   verySlowObservable.subscribe();
 };
-
-const SlowExample = () => {
-  return (
-    <>
-      <Button onClick={doWork}>Start slow task - 3s</Button>
-      <Button onClick={doLongWork}>Start very slow task - 6s</Button>
-    </>
-  );
-}
-
-...
 ```
 
 [04:12] If I try this out, I'll just click once on each one of these buttons. The spinner appears and as tasks are completed, eventually it's going to go away. Nice, it works. Now we have an *Operator* that can just be *piped* to any *Observable* in our app and it's going to enable spinner tracking capabilities on that *Observable*.

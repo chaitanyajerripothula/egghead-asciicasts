@@ -30,152 +30,24 @@ Instructor: [00:00] But now we have a new problem. If we have a task that lasts 
 
 ### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-The moment the spinner becomes active...
-    Switch to waiting for 2s before showing it
-    But cancel if it becomes inactive again in the meantime
-*/
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => timer(2000).pipe(takeUntil(spinnerDeactivated)))
-)
-
 /*
 When does the spinner need to hide?
 
 When 2 events have happened:
-    Spinner became inactive
-    2 seconds have passed
+  Spinner became inactive
+  2 seconds have passed
 */
 
 const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  timer(2000)
+
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(spinnerDeactivated))))
-  .subscribe();
-
-export default {};
 ```
 
 [01:59] *combineLatest()* is usually used to combine the latest emissions from its inputs and emit them as an array, but we don't need the combination capabilities. We're just using it to wait for two separate events to happen before emitting. We've seen this two-second timer before. It actually represents our flash threshold.
 
 [02:19] Anything flashing on the screen for less than two seconds we consider a bad experience for the user. I'll extract it out and I'll replace it here and here. Now, I just need to replace this (`shouldHideSpinner`) in our top level stream. Let's go and test this out.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-The moment the spinner becomes active...
-    Switch to waiting for 2s before showing it
-    But cancel if it becomes inactive again in the meantime
-*/
-
 const flashThreshold = timer(2000);
 
 const shouldShowSpinner = spinnerActivated.pipe(
@@ -186,22 +58,14 @@ const shouldShowSpinner = spinnerActivated.pipe(
 When does the spinner need to hide?
 
 When 2 events have happened:
-    Spinner became inactive
-    2 seconds have passed
+  Spinner became inactive
+  2 seconds have passed
 */
 
 const shouldHideSpinner = combineLatest(
   spinnerDeactivated,
   flashThreshold
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [02:37] If I trigger the task that takes just a bit over two seconds and please watch the count of background tasks along with the spinner at the bottom, there will be a small two second delay, the spinner shows and then it hides again. Even though the count of background tasks went to zero, the spinner was still up for the full two seconds that we wanted it to. It's not glitchy anymore.

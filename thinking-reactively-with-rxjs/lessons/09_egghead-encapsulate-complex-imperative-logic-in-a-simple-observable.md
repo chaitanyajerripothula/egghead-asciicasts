@@ -6,132 +6,12 @@ Instructor: [00:00] Let's finally display the spinner. I'll `import` the *functi
 
 ### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
 import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-const showSpinner = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When does the loader need to hide?
-
-When the count of async tasks goes to 0
-*/
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-/*
-When the spinner needs to show
-    → show the spinner..until it's time to hide it
-*/
-
-shouldShowSpinner.pipe(
-  switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner)))
-).subscribe();
-
-export default {};
 ```
 
 [00:14] As we've seen in the previous lesson, we can't expect a lot of libraries out there to use RxJS. This case is no different. The way this specific library works is when you call the *function* `initLoadingSpinner`, you get back a *promise* of a spinner. When that *promise* resolves, you get access to an instance of the spinner, on which you can call `.show()`.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-const showSpinner = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 shouldShowSpinner.pipe(
   switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner)))
 ).subscribe();
@@ -139,8 +19,6 @@ shouldShowSpinner.pipe(
 const loadingSpinnerPromise = initLoadingSpinner();
 
 loadingSpinnerPromise.then(spinner => spinner.show());
-
-export default {};
 ```
 
 [00:36] Let's see that in action. I'll bring in our app, save the file and we can see our spinner at the bottom. Granted, the it is always on the screen now because we've not plugged it into our logic, but it's there, we can see it.
@@ -150,74 +28,13 @@ export default {};
 
 [00:48] Once we have the instance, let's set up a `setTimeout()` after a few seconds and then call another method that's available on the spinner, which is `.hide()`. I'll save this, wait for the app to refresh, I'll see it. After a few seconds, it goes away. It works.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-const showSpinner = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-const loadingSpinnerPromise = initLoadingSpinner();
-
 loadingSpinnerPromise.then(spinner => {
   spinner.show()
   setTimeout(() => {
     spinner.hide();
   }, 3000)
 });
-
-export default {};
 ```
 
 [01:06] This is a bit of a weird API, right? It takes a few steps to get the spinner instance and then to *show* it and then finally, to *hide* it. While I'm not using the exact same library, the angular loading spinner from ionic ([Ionic's Loading Spinner Docs](https://ionicframework.com/docs/api/loading)) actually exposes a `loadingController` service.
@@ -230,57 +47,7 @@ export default {};
 
 [02:02] We want to keep this intact and avoid polluting it with our multi step API. I'll just scroll a bit up and cut out the `showSpinner` and I'll just move it down here. Now, the *Observable* constructor actually accepts a callback, which will be invoked anytime somebody *subscribes* to our *Observable*.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
 
 const showSpinner = new Observable(() => {
@@ -299,65 +66,11 @@ loadingSpinnerPromise.then(spinner => {
     spinner.hide();
   }, 3000)
 });
-
-export default {};
 ```
 
 [02:24] Let's move our code for showing the spinner in here. I'll just get rid of the hiding part. Let's try this out. I'll bring in the app again. Whenever we start a few tasks, we can see the spinner now appearing. When they go back down to zero, it's still there.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const showSpinner = new Observable(() => {
   //I've been subscribed to!!
   const loadingSpinnerPromise = initLoadingSpinner();
@@ -370,65 +83,11 @@ const showSpinner = new Observable(() => {
 shouldShowSpinner
   .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
   .subscribe();
-
-export default {};
 ```
 
 [02:41] From this *Observable* callback, you can optionally return another *function* that will be called whenever the *Observable* is unsubscribed from.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const showSpinner = new Observable(() => {
   //I've been subscribed to!!
   const loadingSpinnerPromise = initLoadingSpinner();
@@ -441,69 +100,11 @@ const showSpinner = new Observable(() => {
     //oh no, I've been unsubscribed from!
   }
 });
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [02:51] This is the perfect place to get an instance of the spinner again and call `.hide()` on it. Keep in mind that promises cached their values. Once this resolves and we get the spinner instance, by the time this gets called, the spinner instance will have already been cached in the *promise*. This is going to resolve instantly with the same exact instance.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const shouldHideSpinner = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const shouldShowSpinner = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const showSpinner = new Observable(() => {
   //I've been subscribed to!!
   const loadingSpinnerPromise = initLoadingSpinner();
@@ -519,12 +120,6 @@ const showSpinner = new Observable(() => {
     })
   }
 });
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [03:12] Let's try that again. I'll save it, I'll start a few tasks and you can see that once they start going down and they reach zero, our spinner disappears now.

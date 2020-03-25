@@ -33,25 +33,10 @@ Instructor: [0:00] Our virtual manager congratulates us on the quick turnaround 
 ### 83% Loading Tasks
 ![83 Loading Tasks](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-83-loading-tasks.png)
 
-[01:26] How do we show this percentage number on the screen? It turns out that our `initLoadingSpinner` *function* takes two parameters -- a `total` and a `completed`. Let's mock them up here. As in our visualization, the `total` will be `6` and the `completed` will be `5`.
+[01:26] How do we show this percentage number on the screen? It turns out that our `initLoadingSpinner` function takes two parameters -- a `total` and a `completed`. Let's mock them up here. As in our visualization, the `total` will be `6` and the `completed` will be `5`.
 
 ### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
 const total = 6;
 const completed = 5;
 const showSpinner = new Observable(() => {
@@ -67,83 +52,13 @@ const showSpinner = new Observable(() => {
     });
   };
 });
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [01:45] Our library, based on these two, will calculate the percentage completed out of the total and display it on the screen. If we go back to the app and launch a task, we can see it displaying 83 percent. This is static. We need to make this number dynamic, based on how many tasks are actively loading and have completed since we started showing it.
 
 [02:11] To make it easier and allow us to pass in these two numbers, I'll wrap this `Observable()` in a *function* that accepts them as arguments. Where can we get these two numbers (`total`, `completed`) from?
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
 const showSpinner = (total, completed) => new Observable(() => {
   const loadingSpinnerPromise = initLoadingSpinner(total, completed);
 
@@ -157,58 +72,6 @@ const showSpinner = (total, completed) => new Observable(() => {
     });
   };
 });
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [02:23] If we go back to visualizing this, if our `total` is the length of the array, then it can be calculated from how many have completed and how many are still yet to load. To solve our problem, really, we just need to know how many have completed and how many are still loading.
@@ -230,61 +93,14 @@ export default {};
 
 [03:31] Let me define a `loadStats` *Observable* that will take the `currentLoadCount`, and because we need to keep track of state, I'll `pipe()` it to a `scan()` which will accept the *function*. I'll refer to the previous state as `loadStats` and the new loading count will be `loadingUpdate`.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
-const showSpinner = (total, completed) => new Observable(() => {
-  const loadingSpinnerPromise = initLoadingSpinner(total, completed);
-
-  loadingSpinnerPromise.then(spinner => {
-    spinner.show();
-  });
-
-  return () => {
-    loadingSpinnerPromise.then(spinner => {
-      spinner.hide();
-    });
-  };
-});
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
 const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
+  startWith(0),
+  scan((totalCurrentLoads, changeInLoads) => {
+    return totalCurrentLoads + changeInLoads;
+  }),
+  distinctUntilChanged(),
+  shareReplay({ bufferSize: 1, refCount: true })
 );
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
@@ -296,95 +112,11 @@ const loadStats = currentLoadCount.pipe(
 )
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [03:52] Now, what kind of state will this return? We need to know `total` and `completed` to pass to our spinners. I'll initialize them with `0` for now. To calculate `completed`, we need to know whether the loading count has gone up or down. For that, we need to keep track of the `previousLoading` count as well.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
-const showSpinner = (total, completed) => new Observable(() => {
-  const loadingSpinnerPromise = initLoadingSpinner(total, completed);
-
-  loadingSpinnerPromise.then(spinner => {
-    spinner.show();
-  });
-
-  return () => {
-    loadingSpinnerPromise.then(spinner => {
-      spinner.hide();
-    });
-  };
-});
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const loadStats = currentLoadCount.pipe(
   scan((loadStats, loadingUpdate) => {
     return {
@@ -394,193 +126,11 @@ const loadStats = currentLoadCount.pipe(
     }
   })
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
-[04:12] The loads went down if the new loadingUpdate is smaller than the previous loading. The current value of completed tasks if loads went down, will be the previous value plus one, otherwise it stays the same.
+[04:12] The loads went down if the new `loadingUpdate` is smaller than the `previousLoading`. The current value of completed tasks if loads went down, will be the previous value plus one, otherwise it stays the same.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
-const showSpinner = (total, completed) => new Observable(() => {
-  const loadingSpinnerPromise = initLoadingSpinner(total, completed);
-
-  loadingSpinnerPromise.then(spinner => {
-    spinner.show();
-  });
-
-  return () => {
-    loadingSpinnerPromise.then(spinner => {
-      spinner.hide();
-    });
-  };
-});
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadStats = currentLoadCount.pipe(
-  scan((loadStats, loadingUpdate) => {
-
-  })
-)
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
-```
-
-[03:52] Now, what kind of state will this `return`? We need to know `total` and `completed` to pass to our spinners. I'll initialize them with `0` for now. To calculate `completed`, we need to know whether the loading count has gone up or down. For that, we need to keep track of the `previousLoading` count as well.
-
-### TaskProgressService.js
-```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
-const showSpinner = (total, completed) => new Observable(() => {
-  const loadingSpinnerPromise = initLoadingSpinner(total, completed);
-
-  loadingSpinnerPromise.then(spinner => {
-    spinner.show();
-  });
-
-  return () => {
-    loadingSpinnerPromise.then(spinner => {
-      spinner.hide();
-    });
-  };
-});
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const loadStats = currentLoadCount.pipe(
   scan((loadStats, loadingUpdate) => {
     const loadsWentDown = loadingUpdate < loadStats.previousLoading;
@@ -592,97 +142,11 @@ const loadStats = currentLoadCount.pipe(
     }
   })
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
-[04:31] `completed` will be this one, `previousLoading` will become the new `loadingUpdate`, and `total` will be completed (`currentCompleted`) plus the `loadingUpdate`. I'll also define the initial state and they will all start from `0`.
+[04:31] `completed` will be `currentCompleted`, `previousLoading` will become the new `loadingUpdate`, and `total` will be completed (`currentCompleted`) plus the `loadingUpdate`. I'll also define the initial state and they will all start from `0`.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
-const showSpinner = (total, completed) => new Observable(() => {
-  const loadingSpinnerPromise = initLoadingSpinner(total, completed);
-
-  loadingSpinnerPromise.then(spinner => {
-    spinner.show();
-  });
-
-  return () => {
-    loadingSpinnerPromise.then(spinner => {
-      spinner.hide();
-    });
-  };
-});
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const loadStats = currentLoadCount.pipe(
   scan((loadStats, loadingUpdate) => {
     const loadsWentDown = loadingUpdate < loadStats.previousLoading;
@@ -694,34 +158,6 @@ const loadStats = currentLoadCount.pipe(
     }
   }, {total: 0, completed: 0, previousLoading: 0})
 )
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => showSpinner.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [04:44] What happens all tasks complete and we're at 100 percent again? We want to reset the `total` and `completed` back to `0` again as well, so they are ready for the next time we need to show the spinner and start calculating the percentage.
@@ -730,65 +166,7 @@ export default {};
 
 [05:13] I'll show you what I mean by creating an *Observable* called `spinnerWithStats`, which will listen to the `loadStats` and switch to showing a spinner with the correct percentage any time our stats change. Now, instead of showing the simple spinner, we'll show a spinner with stats.
 
-### TaskProgressService.js
 ```js
-import { Observable, merge, Subject } from "rxjs";
-import {
-  mapTo,
-  scan,
-  startWith,
-  distinctUntilChanged,
-  shareReplay,
-  filter,
-  pairwise
-} from "rxjs/operators";
-import { initLoadingSpinner } from '../services/LoadingSpinnerService';
-
-const taskStarts = new Observable();
-const taskCompletions = new Observable();
-
-const total = 6;
-const completed = 5;
-const showSpinner = (total, completed) => new Observable(() => {
-  const loadingSpinnerPromise = initLoadingSpinner(total, completed);
-
-  loadingSpinnerPromise.then(spinner => {
-    spinner.show();
-  });
-
-  return () => {
-    loadingSpinnerPromise.then(spinner => {
-      spinner.hide();
-    });
-  };
-});
-
-export function newTaskStarted() {
-taskStarts.next();
-}
-
-export function existingTaskCompleted() {
-  taskCompletions.next();
-}
-
-const loadUp = taskStarts.pipe(mapTo(1));
-const loadDown = taskCompletions.pipe(mapTo(-1));
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
-const loadVariations = merge(loadUp, loadDown);
-
-const currentLoadCount = loadVariations.pipe(
-    startWith(0),
-    scan((totalCurrentLoads, changeInLoads) => {
-      return totalCurrentLoads + changeInLoads;
-    }),
-    distinctUntilChanged(),
-    shareReplay({ bufferSize: 1, refCount: true })
-);
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx //
-
 const loadStats = currentLoadCount.pipe(
   scan((loadStats, loadingUpdate) => {
     const loadsWentDown = loadingUpdate < loadStats.previousLoading;
@@ -806,32 +184,6 @@ const loadStats = currentLoadCount.pipe(
 const spinnerWithStats = loadStats.pipe(
   switchMap(stats => showSpinner(stats.total, stats.completed))
 );
-
-const spinnerDeactivated = currentLoadCount.pipe(
-  filter(count => count === 0)
-);
-
-const spinnerActivated = currentLoadCount.pipe(
-  pairwise(),
-  filter(([prevCount, currCount]) => prevCount === 0 && currCount === 1))
-);
-
-const flashThreshold = timer(2000);
-
-const shouldShowSpinner = spinnerActivated.pipe(
-  switchMap(() => flashThreshold.pipe(takeUntil(spinnerDeactivated)))
-)
-
-const shouldHideSpinner = combineLatest(
-  spinnerDeactivated,
-  flashThreshold
-)
-
-shouldShowSpinner
-  .pipe(switchMap(() => spinnerWithStats.pipe(takeUntil(shouldHideSpinner))))
-  .subscribe();
-
-export default {};
 ```
 
 [05:36] Remember, that *scan()* keeps track of its state only while it has subscribers. Whenever the spinner needs to be shown, we'll switch to this *Observable*, which internally will initialize the new state for *scan()* and will start tracking the percentage. Whenever we need to dispose of it, it will delete and reset any state for the percentage that we were keeping track of.
