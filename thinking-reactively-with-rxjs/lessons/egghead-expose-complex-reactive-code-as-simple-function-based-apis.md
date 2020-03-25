@@ -68,19 +68,19 @@ export function existingTaskCompleted() {
 [01:05] I have here some `components`. I'll just open up the `SlowExample.js` and also open the app to the side. These two buttons here are responsible for the two buttons on the first step. Whenever you click on the button, it *Subscribes* to an *Observable* that emits after three seconds or six seconds for the longer one.
 
 ### SlowExample.js Overview
-![Slow Example Overview](../images/egghead-expose-complex-reactive-code-as-simple-function-based-apis-slow-example-overview.png)
+![Slow Example Overview](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168508/transcript-images/egghead-expose-complex-reactive-code-as-simple-function-based-apis-slow-example-overview.jpg)
 
 [01:25] We have our service already *imported* here. I'm just going to pick our two *exported functions*. We want to call this whenever one of the buttons is pressed. We want to call `existingTaskCompleted()` right in the `.subscribe()` for both of the *Observables*. Basically, we consider them completed whenever they emit.
 
 ### On Button Click Example
-![On Button Click Example](../images/egghead-expose-complex-reactive-code-as-simple-function-based-apis-on-button-click-example.png)
+![On Button Click Example](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168502/transcript-images/egghead-expose-complex-reactive-code-as-simple-function-based-apis-on-button-click-example.jpg)
 
 [01:44] Why are we going from an *Observable* to a *Function*, back to an *Observable* again? Let's open up our code for the other tab. This is the `component` responsible for our second tab at the bottom. Here we're dealing with *Promises*. Because we've kept our API simple, we can now `import` our two *functions* (`existingTaskCompleted, newTaskStarted`) again and call `newTaskStarted()` before the *Promises* are created and `newTaskCompleted()` right before they `resolve`.
 
 [02:10] Now, whenever a button is clicked, it's going to tell our service that the new task has started. Whenever this `Promise` resolves after a few seconds, it's going to tell our service that a task has just completed.
 
 ### Button Reactions
-![Button Reactions](../images/egghead-expose-complex-reactive-code-as-simple-function-based-apis-button-reactions.png)
+![Button Reactions](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168503/transcript-images/egghead-expose-complex-reactive-code-as-simple-function-based-apis-button-reactions.jpg)
 
 [02:22] To recap, we've been taking advantage of RxJS to create readable streams of nicely flowing logic. We paid attention to how we create these obstructions to keep our solution maintainable and robust, but most code bases are not using RxJS.
 

@@ -5,7 +5,7 @@ Instructor: [00:00] Our virtual manager now tells us that our internal QA team n
 [00:32] How do we know that a combo has started? Well, we wait for the user to press the A key and once they press that, then we are in combo mode. At this point, we need to listen really closely to see if they're correctly pressing the rest of the keys in the combo. Let's write that out.
 
 ### Entering Combo Mode
-![Entering Combo Mode](../images/egghead-build-an-event-combo-observable-entering-combo-mode.png)
+![Entering Combo Mode](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168487/transcript-images/egghead-build-an-event-combo-observable-entering-combo-mode.jpg)
 
 [00:48] `whenever somebody starts a combo` - `keep taking(listening) for the rest of the combo keys`. How long do we want to listen for keys? What are going to be the conditions taking us out of the combo mode again?
 
@@ -42,7 +42,7 @@ Instructor: [00:00] Our virtual manager now tells us that our internal QA team n
 [01:47] We can be more specific than that. How do we know we got to the end of the combo? We know because we got back three letters while in combo mode. Why does getting three letters represent the completion of the combo?
 
 ### End of Combo Mode
-![End of Combo Mode](../images/egghead-build-an-event-combo-observable-end-of-combo-mode.png)
+![End of Combo Mode](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168487/transcript-images/egghead-build-an-event-combo-observable-end-of-combo-mode.jpg)
 
 [02:00] If our previous two conditions, the one that keeps track of time and the one that keeps track of whether the combo is being followed correctly, have let us get to all the three keys in our combo, and they have not cut us off, that means that the combo is successful.
 
@@ -215,22 +215,22 @@ interval(1000).pipe(
 If I bring in the app, you can see that we get values each second. I'll press A, S, D and F and we can see that the timer definitely stopped. We also see that it completed only after the second letter S and not when the full combo finished.
 
 ### Console Output
-![Console Output](../images/egghead-build-an-event-combo-observable-console-output.png)
+![Console Output](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168496/transcript-images/egghead-build-an-event-combo-observable-console-output.jpg)
 
 [05:53] What happened there is that the first key was pressed correctly, combo was initiated. Then, we press another correct key within our time limit so both of these let that value go through. Because we hadn't reached our limit for take, it went through this one as well.
 
 [06:09] Our second letter was immediately emitted as a notification, which triggered the *takeUntil*. What we really want is instead of taking all these three values and letting all of them go through, we want to skip the first two and only take the last one if we get to it. If the combo is bigger, we want to skip the first four and only take the last one.
 
 ### Small Combo
-![Small Combo](../images/egghead-build-an-event-combo-observable-small-combo.png)
+![Small Combo](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168493/transcript-images/egghead-build-an-event-combo-observable-small-combo.jpg)
 
 ### Large Combo
-![Large Combo](../images/egghead-build-an-event-combo-observable-large-combo.png)
+![Large Combo](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168484/transcript-images/egghead-build-an-event-combo-observable-large-combo.jpg)
 
 [06:33] Basically, we want to skip the first *combo length - 2* values inside the inner combo and only take the last one. In that case, I'll add the `skip(keyCombo.length - 2)` right before the `take()` and then I'll just take the last `1`.
 
 ### Our Plan
-![Our Plan](../images/egghead-build-an-event-combo-observable-our-plan.png)
+![Our Plan](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168492/transcript-images/egghead-build-an-event-combo-observable-our-plan.jpg)
 
 ```js
 function keyCombo(keyCombo) {
@@ -254,17 +254,17 @@ function keyCombo(keyCombo) {
 [07:10] Let's test that again. The timer starts, I'll start pressing keys and once we got to the last one, it completes. We can see that it actually completed once we press the combo keys in the correct order. 
 
 ### Complete Combo
-![Complete Combo](../images/egghead-build-an-event-combo-observable-complete-combo.png)
+![Complete Combo](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168499/transcript-images/egghead-build-an-event-combo-observable-complete-combo.jpg)
 
 [07:24] I'll now try to refresh and I'll press the first letter correctly, but then press the wrong letter and then continue pressing the correct ones. Now you can see that the interval keeps going. What happened there is I press the first one, but then I broke the combo and then it didn't matter that I continue them press the letters correctly. The combo didn't complete.
 
 ### Invalid Combo
-![Invalid Combo](../images/egghead-build-an-event-combo-observable-invalid-combo.png)
+![Invalid Combo](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168500/transcript-images/egghead-build-an-event-combo-observable-invalid-combo.jpg)
 
 [07:45] If I refresh again, I start the combo but then wait for three seconds and then press the rest of the combo, again, it's not going to complete. It's going to continue notifying.
 
 ### Slow Combo
-![Slow Combo](../images/egghead-build-an-event-combo-observable-slow-combo.png)
+![Slow Combo](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168497/transcript-images/egghead-build-an-event-combo-observable-slow-combo.jpg)
 
 [07:56] Again, even though we did press all of the keys in the combo, because there was such a huge gap between the first letter and the second letter, we didn't complete the combo correctly, so it works.
 

@@ -6,7 +6,7 @@ const comboTriggered = keyCombo(["a", "s", "a", "f"])
 ```
 
 ### Unknown Continuation
-![Unknown Continuation](../images/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones-unknown-continuation.png)
+![Unknown Continuation](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168492/transcript-images/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones-unknown-continuation.jpg)
 
 [00:23] It keeps going. It doesn't complete even though we typed the letters in the required amount of time. Why is that? Well, this *Observable* fires whenever the *comboInitiator* is pressed. In our case, the *comboInitiator* is the letter A. When A is pressed, the inner combo starts. We then press S which goes through this and it's all good.
 
@@ -34,7 +34,7 @@ function keyCombo(keyCombo) {
 [01:13] Once this is active, any notifications from the source will be ignored until one of these takes ends the inner combo and we're ready to start listening for a new combo. Let's try that out. The timer starts. I'll press A, S, A and then F and it completes. Nice, it works.
 
 ### Exhaust Map Output
-![Exhaust Map Output](../images/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones-exhaust-map-output.png)
+![Exhaust Map Output](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168495/transcript-images/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones-exhaust-map-output.jpg)
 
 [01:31] Let's use this to disable our spinner. I'll remove our debug element. I'll `export` the *function* (*keyCombo()*). I'll now go back to our *TaskProgressService.js* and `import` our `keyCombo` from our *EventCombo* package.
 
@@ -103,4 +103,4 @@ shouldShowSpinner
 [02:19] If I switch back to the app, I'm going to trigger a task. I'll start typing in my combo and the moment I press Y, the spinner hides. If I try to trigger more tasks, we can see that the spinner doesn't even show at all because it's been disabled.
 
 ### Disabling Spinner Output
-![Disabling Spinner Output](../images/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones-disabling-spinner-output.png)
+![Disabling Spinner Output](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168485/transcript-images/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones-disabling-spinner-output.jpg)

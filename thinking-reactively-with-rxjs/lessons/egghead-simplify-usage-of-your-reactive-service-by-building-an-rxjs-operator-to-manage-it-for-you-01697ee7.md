@@ -128,7 +128,7 @@ function showLoadingStatus() {
 [03:09] If I bring in the console, we can see that we correctly called *taskStarted* whenever we *subscribed* to it. We then get the two notifications from the interval. Because we only take the first two, we then get a complete notification.
 
 ### Correct Call Verifications
-![Correct Call Verifications](../images/egghead-simplify-usage-of-your-reactive-service-by-building-an-rxjs-operator-to-manage-it-for-you-01697ee7-correct-call-verifications.png)
+![Correct Call Verifications](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168484/transcript-images/egghead-simplify-usage-of-your-reactive-service-by-building-an-rxjs-operator-to-manage-it-for-you-01697ee7-correct-call-verifications.jpg)
 
 [03:24] What's interesting is that even though we don't explicitly *unsubscribe* from this one, we still get our *taskComplete* invocation inside our disposal *function*. That's because whenever our *Observer* gets a complete notification, it's going to immediately *unsubscribe* from its source *Observable*, which is going to trigger the disposal *function* in our *Operator*. Awesome.
 
@@ -171,4 +171,4 @@ const doLongWork = () => {
 [04:12] If I try this out, I'll just click once on each one of these buttons. The spinner appears and as tasks are completed, eventually it's going to go away. Nice, it works. Now we have an *Operator* that can just be *piped* to any *Observable* in our app and it's going to enable spinner tracking capabilities on that *Observable*.
 
 ### Polished Output
-![Polished Output](../images/egghead-simplify-usage-of-your-reactive-service-by-building-an-rxjs-operator-to-manage-it-for-you-01697ee7-polished-output.png)
+![Polished Output](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168477/transcript-images/egghead-simplify-usage-of-your-reactive-service-by-building-an-rxjs-operator-to-manage-it-for-you-01697ee7-polished-output.jpg)

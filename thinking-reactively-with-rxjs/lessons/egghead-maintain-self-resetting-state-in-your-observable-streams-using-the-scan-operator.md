@@ -3,31 +3,31 @@ Instructor: [0:00] Our virtual manager congratulates us on the quick turnaround 
 [00:07] Users want to see a percentage progress indicator of how many tasks are left to display in the background. We can imagine that in our head. We see a spinner here, and as tasks are going down, a percentage will slowly increase up to 100 percent, at which point the spinner will hide.
 
 ### Original App Interface
-![Original App Interace](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-original-app-interface.png)
+![Original App Interace](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168479/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-original-app-interface.jpg)
 
 [00:27] As we've seen with previous requirements, it helps to understand the problem before diving into writing code. Imagine an empty array. Then suddenly, a task starts, so the spinner shows. There's no point in showing zero percent when nothing has loaded. It doesn't help or offer any important info.
 
 ### Empty Array Spinner
-![Empty Array Spinner](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-empty-array-spinner.png)
+![Empty Array Spinner](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168472/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-empty-array-spinner.jpg)
 
 [00:46] Then a few more tasks start as well. We now have four loading tasks, zero percent of them have finished. Then one of them finishes. 25 percent of them have finished. Then another finishes, 50 percent are complete now. Then another, 75 percent complete.
 
 ### Empty Loading Tasks
-![Empty Loading Tasks](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-empty-loading-tasks.png)
+![Empty Loading Tasks](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168472/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-empty-loading-tasks.jpg)
 
 ### 75% Loading Tasks
-![75 Loading Tasks](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-75-loading-tasks.png)
+![75 Loading Tasks](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168474/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-75-loading-tasks.jpg)
 
 [01:03] Just before the last one has a chance to complete as well, a new one starts. That brings our total loaded count back a bit, to 60 percent, out of a total five. Another one starts. Now only 50 percent out of the total have completed. Now they start completing again, and again. Now we have five completed out of a total of six, which is 83 percent.
 
 ### 60% Loading Tasks
-![60 Loading Tasks](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-60-loading-tasks.png)
+![60 Loading Tasks](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168476/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-60-loading-tasks.jpg)
 
 ### 50% Loading Tasks
-![50 Loading Tasks](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-50-loading-tasks.png)
+![50 Loading Tasks](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168474/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-50-loading-tasks.jpg)
 
 ### 83% Loading Tasks
-![83 Loading Tasks](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-83-loading-tasks.png)
+![83 Loading Tasks](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168475/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-83-loading-tasks.jpg)
 
 [01:26] How do we show this percentage number on the screen? It turns out that our `initLoadingSpinner` function takes two parameters -- a `total` and a `completed`. Let's mock them up here. As in our visualization, the `total` will be `6` and the `completed` will be `5`.
 
@@ -73,19 +73,19 @@ const showSpinner = (total, completed) => new Observable(() => {
 [02:23] If we go back to visualizing this, if our `total` is the length of the array, then it can be calculated from how many have completed and how many are still yet to load. To solve our problem, really, we just need to know how many have completed and how many are still loading.
 
 ### Total Visualization
-![Total Visualization](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-total-visualization.png)
+![Total Visualization](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168477/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-total-visualization.jpg)
 
 [02:41] To get how many are loading, we already have an *Observable* we've built earlier, the `currentLoadCount`. That's why it's good to keep abstractions that make sense on their own. You don't know when you'll need them later.
 
 [02:54] Now, let's look at what happens when our `currentLoadCount` *Observable* emits. When the number of loading tasks goes up, our total goes up as well. When the `currentLoadCount` goes down, that's a sign that a task has completed, so we increase completed by one.
 
 ### Current Load Count Visualization
-![Current Load Count Visualization](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-current-load-count-visualization.png)
+![Current Load Count Visualization](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168483/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-current-load-count-visualization.jpg)
 
 [03:12] When it goes down again from three to two, and then to one, we keep increasing completed. When it starts going up again, we leave completed alone. If you watch total, it's always going to reflect the sum of these two. When number of loading tasks goes down again, completed goes up.
 
 ### Current Load Count Visualization (Update)
-![Current Load Count Visualization Update](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-current-load-count-visualization-update.png)
+![Current Load Count Visualization Update](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168482/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-current-load-count-visualization-update.jpg)
 
 [03:31] Let me define a `loadStats` *Observable* that will take the `currentLoadCount`, and because we need to keep track of state, I'll `pipe()` it to a `scan()` which will accept the *function*. I'll refer to the previous state as `loadStats` and the new loading count will be `loadingUpdate`.
 
@@ -189,7 +189,7 @@ const spinnerWithStats = loadStats.pipe(
 [06:22] Let's test it. I'll create a few slow tasks, then a few quick ones, and then a few slow ones again. You'll notice that when I create new tasks, the percentage goes down, and then it starts going up again, all the way up to 100 percent, at which point it hides. Important, if I start it up again, it starts again from zero, so we can see that the resetting has worked.
 
 ### Spinner with Stats
-![Spinner with Stats](../images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-spinner-with-stats.png)
+![Spinner with Stats](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168485/transcript-images/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator-spinner-with-stats.jpg)
 
 [06:46] Takeaways from this, so if you have state and that state needs to be reset, say, when this goes back down to zero, consider the life cycle of the *Observable* *scan()* belongs to rather than manually resetting it. This is powerful, because we can focus on what this *Observable* does, which is tracking the loading stats, and not have to worry about when to clean up and do the resets.
 

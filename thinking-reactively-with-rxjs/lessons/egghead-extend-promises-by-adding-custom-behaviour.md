@@ -30,15 +30,9 @@ class PromiseWithLoadingProgress extends Promise {
 
 [00:49] Let's see what happens when a developer creates a new *Promise*. They send the *Promise* a callback. Then the *Promise* invokes that callback and sends the developer a resolve and reject *function*, which they can use whenever they want.
 
-### A Promise Behind the Scenes
-![A Promise Behind the Scenes](../images/egghead-extend-promises-by-adding-custom-behaviour-a-promise-bts.png)
-
 [01:03] We need to hijack that process and place our new custom spinner *Promise* between the developer and the real *Promise*. Now we'll send the callback to the real *Promise*, which will send us back the original resolve and reject.
 
 [01:17] We then need to wrap the resolve and reject that we get from the *Promise* with our custom spies. We'll then get a hold of the callback that the developer originally passed to us. Instead of the original resolve and reject, we're going to send back our spies.
-
-### Custom Spinner Promise Diagram
-![Custom Spinner Promise](../images/egghead-extend-promises-by-adding-custom-behaviour-custom-spinner-promise-diagram.png)
 
 [01:33] Let's do the first step. Let's get the original resolve and reject from the *Promise*. Because we're extending from another class, the *Promise* class, we have access to the `super()` keyword, which will accept whatever *Promises* normally accept in their *constructor* -- a callback that will be invoked with the `originalResolve` and `originalReject`.
 

@@ -1,26 +1,26 @@
 Instructor: [00:00] But now we have a new problem. If we have a task that lasts just a bit over two seconds like this one, you'll notice there's a delay, but then the spinner quickly appears and disappears again.
 
 ### New Problem
-![New Problem](../images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-new-problem.png)
+![New Problem](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168478/transcript-images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-new-problem.jpg)
 
 [00:11] Let's try it again. It appears and then disappears quickly. We're back to square one of having a glitchy spinner. Our problem stems from the decision to hide the spinner for the first two seconds of activity and only show it after that.
 
 ### Time Diagram
-![Time Diagram](../images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-time-diagram.png)
+![Time Diagram](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168475/transcript-images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-time-diagram.jpg)
 
 [00:27] If this segment is really small, it's going to look glitchy again. Our virtual manager comes in and tells us that once the spinner is showing, keep showing it for at least two seconds. Before jumping in to implement this, let's think about how we can reword it.
 
 [00:45] Once the spinner is showing, when can we hide it? Well, we need to listen for two events in parallel. Have two seconds passed since we started showing it? Check. Did we also get the signal that we have zero tasks remaining and the spinner is inactive?
 
 ### Checklist
-![Checklist](../images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-checklist.png)
+![Checklist](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168494/transcript-images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-checklist.jpg)
 
 [01:01] It doesn't really matter in which order these become true. The spinner might get deactivated before the two seconds are up, as in the case of the problematic task we just saw. The two seconds might be reached way before we get the signal to deactivate the spinner, as in the case of a really, really long task.
 
 [01:18] If both of these are true, we can hide the spinner. Let's use the space we have at this level of abstraction. The new answer to the question when does the spinner need to hide will be when two events have happened, spinner became inactive and two seconds have passed.
 
 ### Obstruction Levels - Added Segment
-![Added Segment](../images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-added-segment.png)
+![Added Segment](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168509/transcript-images/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened-added-segment.jpg)
 
 [01:35] I'll copy this to my code. I'll put it right here at this level. I'll declare `shouldHideSpinner` and I'll use the `combineLatest()` operator. `combineLatest()` waits for all of its inputs to emit before emitting for the first time. The first event I want to wait for is `spinnerDeactivated`. The second is a timer of two seconds (`timer(2000)`).
 

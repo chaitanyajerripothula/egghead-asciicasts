@@ -20,7 +20,7 @@ loadingSpinnerPromise.then(spinner => spinner.show());
 [00:36] Let's see that in action. I'll bring in our app, save the file and we can see our spinner at the bottom. Granted, the it is always on the screen now because we've not plugged it into our logic, but it's there, we can see it.
 
 ### Application of Spinner
-![Application of Spinner](../images/egghead-encapsulate-complex-imperative-logic-in-a-simple-observable-application-of-spinner.png)
+![Application of Spinner](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168505/transcript-images/egghead-encapsulate-complex-imperative-logic-in-a-simple-observable-application-of-spinner.jpg)
 
 [00:48] Once we have the instance, let's set up a `setTimeout()` after a few seconds and then call another method that's available on the spinner, which is `.hide()`. I'll save this, wait for the app to refresh, I'll see it. After a few seconds, it goes away. It works.
 

@@ -1,7 +1,7 @@
 Instructor: [00:00] We started from some very low-level terms like tasks starting or ending. We went up our floors tackling one small problem at a time creating higher and higher-level abstractions that eventually brought us to being able to solve our top-level requirement. We now have all the pieces we need for this. Let's go and assemble it.
 
 ### Obstruction Levels Diagram
-![Obstruction Levels Diagram](../images/egghead-build-an-observable-from-a-simple-english-requirement-obstruction-levels-diagram.png)
+![Obstruction Levels Diagram](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1585168499/transcript-images/egghead-build-an-observable-from-a-simple-english-requirement-obstruction-levels-diagram.jpg)
 
 [00:19] I'll add a comment for this new layer as well. When the spinner needs to show, show the spinner. Remember, we consider `showSpinner` to be an observable that when activated, shows the spinner. We're not going to worry yet about how that's going to work. When a task starts, switch to displaying the spinner until -- and I'll `pipe()` this to a take until -- until it's time to hide it.
 
