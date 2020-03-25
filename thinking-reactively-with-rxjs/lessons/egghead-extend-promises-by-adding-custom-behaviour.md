@@ -1,7 +1,3 @@
-# Extend promises by adding custom behaviour
-
-[Video link](https://www.egghead.io/lessons/egghead-extend-promises-by-adding-custom-behaviour)
-
 Instructor: [00:00] Another common task we might want to track is a *Promise*. Since *Promises* don't have *Operators*, let's create a custom *Promise*. I'll go back to our `Extensions.js` file and paste in our use case. I'll call our new Promise `PromiseWithLoadingProgress`. It will extend the native `Promise`.
 
 ### Extensions.js

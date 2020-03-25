@@ -1,7 +1,3 @@
-# Create safe and predictable observable abstractions
-
-[Video link](https://www.egghead.io/lessons/egghead-create-safe-and-predictable-observable-abstractions)
-
 Instructor: [00:00] Our `currentLoadCount` *Observable* is great and useful. Anybody can subscribe to it and they'll get how many tasks are currently loading in their application. Because we can't assume who will subscribe to it, how it will be used, we need to make it work in a very predictable fashion, so it doesn't bring surprises to consumers.
 
 [00:18] Good abstractions are as predictable as possible. If somebody subscribes to this, they won't get anything until this (`loadVariations`) emits a value. Which is not right. We know that the count is 0 initially so might as well emit 0 and then start tracking properly as tasks begin to start and finish. This scenario is captured in our requirements, start from zero and the nice thing about RxJS is that it usually flows like an English instruction. Let me just `import` the `startWith` operator. We want to `startWith(0)` because `startWith` now gives us the initial value, we don't really need the second argument to `scan()`.

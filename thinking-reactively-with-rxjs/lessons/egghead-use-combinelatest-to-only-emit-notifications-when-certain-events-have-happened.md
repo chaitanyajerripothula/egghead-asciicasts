@@ -1,7 +1,3 @@
-# Use combineLatest to only emit notifications when certain events have happened
-
-[Video link](https://www.egghead.io/lessons/egghead-use-combinelatest-to-only-emit-notifications-when-certain-events-have-happened)
-
 Instructor: [00:00] But now we have a new problem. If we have a task that lasts just a bit over two seconds like this one, you'll notice there's a delay, but then the spinner quickly appears and disappears again.
 
 ### New Problem

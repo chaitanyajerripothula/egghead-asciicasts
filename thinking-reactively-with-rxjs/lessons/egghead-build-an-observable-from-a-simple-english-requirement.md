@@ -1,7 +1,3 @@
-# Build an observable from a simple english requirement
-
-[Video link](https://www.egghead.io/lessons/egghead-build-an-observable-from-a-simple-english-requirement)
-
 Instructor: [00:00] We started from some very low-level terms like tasks starting or ending. We went up our floors tackling one small problem at a time creating higher and higher-level abstractions that eventually brought us to being able to solve our top-level requirement. We now have all the pieces we need for this. Let's go and assemble it.
 
 ### Obstruction Levels Diagram

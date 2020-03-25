@@ -1,7 +1,3 @@
-# Encapsulate complex imperative logic in a simple observable
-
-[Video link](https://www.egghead.io/lessons/egghead-encapsulate-complex-imperative-logic-in-a-simple-observable)
-
 Instructor: [00:00] Let's finally display the spinner. I'll `import` the *function* `initLoadingSpinner` from this service. The implementation of this doesn't really matter. Imagine we're using an NPM library that shows spinners.
 
 ### TaskProgressService.js

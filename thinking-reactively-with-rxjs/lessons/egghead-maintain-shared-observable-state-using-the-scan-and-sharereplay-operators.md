@@ -1,7 +1,3 @@
-# Maintain shared observable state using the scan and shareReplay operators
-
-[Video link](https://www.egghead.io/lessons/egghead-maintain-shared-observable-state-using-the-scan-and-sharereplay-operators)
-
 Instructor: [0:00] We'll take a quick break from building our app to look at this. An `emissions` *Observable* that emits a one anytime we click on this button (`emitButton`). If we look at the console here, when we click on `EMIT`, we get an emission. We `pipe()` these emissions to a `scan()` that adds up the numbers in the same way we've been doing in our app.
 
 ### Emit Button

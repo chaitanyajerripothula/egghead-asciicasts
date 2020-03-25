@@ -1,7 +1,3 @@
-# Simplify usage of your reactive service by building an RxJS operator to manage it for you
-
-[Video link](https://www.egghead.io/lessons/egghead-simplify-usage-of-your-reactive-service-by-building-an-rxjs-operator-to-manage-it-for-you-bbd41d69)
-
 Instructor: [00:00] We've built our service and it works great, but has a very, very simple API, a function you can call to tell it that a task has started and one to tell it that a task is completed.
 
 [00:11] This is great because it opens up our service to be used in the largest amount of context with *Observables*, *Promises*, *setTimeouts*, *fetchEvents*, and other things we haven't even thought of. For the most popular use cases like *Observables*, we can provide additional extensions on top of it to make it even easier to use.

@@ -1,7 +1,3 @@
-# Build an event combo observable
-
-[Video link](https://www.egghead.io/lessons/egghead-build-an-event-combo-observable)
-
 Instructor: [00:00] Our virtual manager now tells us that our internal QA team needs to disable the spinner while testing certain features. The way we're going to do that is that whenever somebody quickly presses a secret key combination on the keyboard, the spinner will get disabled.
 
 [00:16] Let's try and understand that requirement and see how we can break it down into simple English statements. Assume that we have a list of keys, A, S, D, and F that the user has to type within a certain time limit. Our first thought is that we don't need to do anything until the combo has started.

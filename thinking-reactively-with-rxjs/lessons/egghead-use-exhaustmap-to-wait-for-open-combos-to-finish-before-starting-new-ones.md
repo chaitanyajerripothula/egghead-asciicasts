@@ -1,7 +1,3 @@
-# Use exhaustMap to wait for open combos to finish before starting new ones
-
-[Video link](https://www.egghead.io/lessons/egghead-use-exhaustmap-to-wait-for-open-combos-to-finish-before-starting-new-ones)
-
 Instructor: [00:00] But there's still a problem with our implementation. Let's change the combo to have the initiator, the letter A somewhere in the middle as well. Now to trigger the combo, we need to press the letters `'a', 's', 'a'` and finally `'f'`. I'll switch to the app. The timer starts. I press the letters A, S, A, and then F.
 
 ### EventCombo.js

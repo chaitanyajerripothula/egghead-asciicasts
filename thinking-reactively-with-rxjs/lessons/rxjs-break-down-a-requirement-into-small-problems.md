@@ -1,7 +1,3 @@
-# Break down a requirement into small problems
-
-[Video link](https://www.egghead.io/lessons/egghead-break-down-a-requirement-into-small-problems)
-
 Instructor: [00:00] Our virtual manager comes in and tells us that we need to build a spinner for the app that will show any time there's any task going on. Instead of rushing to implement, let's try and break down the problem that we're trying to solve. I'll use this drawing of a building as an analogy for obstruction levels.
 
 ### Obstruction Levels Drawing

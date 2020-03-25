@@ -1,7 +1,3 @@
-# Use reactive, RxJS based solutions for complex problems
-
-[Video link](https://www.egghead.io/lessons/egghead-use-reactive-rxjs-based-solutions-for-complex-problems)
-
 Instructor: [00:00] Whenever I have to build a new feature, or I get a requirement specification, the decision of whether to use RxJS depends on two things for me. Do I need to worry about timing? An example can be as simple as, does it involve async operations? Or even as straightforward as, we need to wait three seconds before making an HTTP request.
 
 [00:20] The second question I ask myself is, do we need to coordinate a lot of events that might be of different types like clicks or HTTP requests or even *setTimeouts*? Again, an example can be wait for the user to click login then make a pull request. Then when that's done, we direct to the account page.

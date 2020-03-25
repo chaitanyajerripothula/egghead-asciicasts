@@ -1,7 +1,3 @@
-# Maintain self-resetting state in your observable streams using the scan operator
-
-[Video link](https://www.egghead.io/lessons/egghead-maintain-self-resetting-state-in-your-observable-streams-using-the-scan-operator)
-
 Instructor: [0:00] Our virtual manager congratulates us on the quick turnaround of the last two feature requests, but then suggests another improvement we can make.
 
 [00:07] Users want to see a percentage progress indicator of how many tasks are left to display in the background. We can imagine that in our head. We see a spinner here, and as tasks are going down, a percentage will slowly increase up to 100 percent, at which point the spinner will hide.

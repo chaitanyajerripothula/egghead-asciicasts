@@ -1,7 +1,3 @@
-# Use the filter and pairwise operators to determine when to show and hide the spinner
-
-[Video link](https://www.egghead.io/lessons/egghead-use-the-filter-and-pairwise-operators-to-determine-when-to-show-and-hide-the-spinner)
-
 Instructor: [0:00] We solved this problem and now we can move up one floor of obstruction. I'll copy this to our source page, and I'll copy this comment over here, just to mark that we're moving up one level of obstruction in our code as well. We're building an observable that's going to answer this question. Let's name it accordingly.
 
 ### TaskProgressService.js

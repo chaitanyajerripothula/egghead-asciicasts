@@ -1,7 +1,3 @@
-# Pipe events to numbers and maintain a running count using the scan operator
-
-[Video link](https://www.egghead.io/lessons/egghead-pipe-events-to-numbers-and-maintain-a-running-count-using-the-scan-operator)
-
 Instructor: [00:00] Let's look at the first problem we have to solve. I'll paste it here so we can follow more easily. I'll use my raw initial sources that I have up here to create a more specialized `loadUp` *Observable* that emits `1` anytime a task starts.
 
 ### TaskProgressService.js

@@ -1,7 +1,3 @@
-# Extend your reactive logic using observable-like proxies that delay or drop events
-
-[Video link](https://www.egghead.io/lessons/egghead-extend-your-reactive-logic-using-observable-like-proxies-that-delay-or-drop-events)
-
 Instructor: [00:00] This button here triggers a really quick task that's over in 300 milliseconds. If I click, the spinner appeared and quickly vanished. I'll do that again. Click, it appears and then vanishes. Not the best experience and it looks a bit glitchy.
 
 ### Problem Overview

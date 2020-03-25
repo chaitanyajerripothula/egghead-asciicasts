@@ -1,7 +1,3 @@
-# Expose complex reactive code as simple function based APIs
-
-[Video link](https://www.egghead.io/lessons/egghead-expose-complex-reactive-code-as-simple-function-based-apis)
-
 Instructor: [00:00] Now that we solved our problem, we can go back and focus on our Observables. How do we make them emit whenever a task starts or complete? Tasks come in all shapes and sizes. It might be an *Observable* that someone's just *Subscribed* to and we're waiting for it to emit or it might be a `setTimeout()` or even a `fetch()` request that's been fired off to some server.
 
 ```js
