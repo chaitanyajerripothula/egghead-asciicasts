@@ -6,7 +6,15 @@ Chris Biscardi: 00:00 If we hit our serverless function now, it'll run Playwrigh
 
 00:24 **It uses a couple packages that we'll have to install.** It also uses language features that aren't native to the browser. We'll have to **compile this file into something that can run in the Chromium instance**.
 
-00:35 To compile our app to something that can run in the Chromium instance, we'll use [Rollup](https://rollupjs.org/guide/en/). We'll also need [rollup-plugin-babel](https://github.com/rollup/rollup-plugin-babel). Rollup can be operated just on the command line. In our case, we'll create a `rollup.config.js` file.
+00:35 To compile our app to something that can run in the Chromium instance, we'll use [Rollup](https://rollupjs.org/guide/en/).
+
+### Terminal
+
+```
+yarn add --dev rollup
+```
+
+We'll also need [`rollup-plugin-babel`](https://github.com/rollup/rollup-plugin-babel). Rollup can be operated just on the command line. In our case, we'll create a `rollup.config.js` file.
 
 00:46 In our `rollup.config.js` file, we'll import `rollup-plugin-babel` and use it with an `input` file of `src/image.js`, which is our component we just pulled out of CodeSandbox, with an output of `image.js`.
 
