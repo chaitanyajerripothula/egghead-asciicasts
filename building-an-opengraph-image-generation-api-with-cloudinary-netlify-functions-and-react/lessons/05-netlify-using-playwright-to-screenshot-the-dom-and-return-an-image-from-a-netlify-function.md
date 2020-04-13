@@ -105,7 +105,7 @@ handle()
 
 3:19 Luckily, because we're using Netlify functions, **if we ever need to make changes, we can do a deploy preview to test the function**. We'll add and commit our `gen-opengraph-image.js` code, the `package.json` with the new dependencies, as well as the `yarn.lock`.
 
-3:30 Note that our build failed because we `Can't find Playwright AWS Lambda in our file`, which is strange because we already installed it. This is where our `Makefile` comes in. Netlify doesn't automatically handle our dependencies for us. We'e going to have to handle that ourselves.
+3:30 Note that our build failed because we `Can't find Playwright AWS Lambda in our file`, which is strange because we already installed it. This is where our `Makefile` comes in. Netlify doesn't automatically handle our dependencies for us. We're going to have to handle that ourselves.
 
 3:43 In this case, we're going to `cd functions/gen-opengraph-image && npm i`. Note that in case yarn was not found. This isn't a problem for us in CI as we can run `npm install` instead.
 
