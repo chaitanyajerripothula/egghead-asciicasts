@@ -27,7 +27,7 @@ exports.handler = async function (event, context) {
 01:03 **We can commit these files and push them. This triggers a new build while we work.** We can now see that instead of new functions to upload, we have 1. If we go to the functions tab, and we click on our function, we can see the `URL` that we have to hit. We can either hit that `UR`L in the browser using the `URL` bar, or we can run `curl` in our terminal.
 
 ```
-culr https://relaxed-payne-d1dfbe.netlify.com/.netlify/functions/gen-opengraph-image
+curl https://relaxed-payne-d1dfbe.netlify.com/.netlify/functions/gen-opengraph-image
 ```
 
 01:23 You could also use any `REST` client for now. Soon, we'll be returning an image though, and **not all `REST` clients support returning images or displaying them.**
