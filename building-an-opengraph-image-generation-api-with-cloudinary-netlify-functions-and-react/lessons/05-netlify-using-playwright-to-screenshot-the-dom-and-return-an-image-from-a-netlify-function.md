@@ -19,7 +19,7 @@ Now that we've added Playwright AWS Lambda to our dependencies, we'll use in our
 1:00 Note that `_defaultContext` is actually an internal API that we have to use because we're using a third-party Playwright package. We create a new page off that context, which will create a new page in the headless Chromium that we've launched.
 
 ```js
-// gen-opengraph-image.js
+// functions/gen-opengraph-image/gen-opengraph-image.js
 
 const playwright = require("playwright-aws-lambda");
 
@@ -115,7 +115,9 @@ handle()
 
 4:05 Now we've deployed the function. We see another `error` if we hit the `URL`.
 
-```bash
+### Error
+
+```
 cannot read property getBoundingClientRect of undefined.
 ```
 
@@ -124,6 +126,8 @@ That's because we have `corgi.children[0].getBoundingClientRect();`.
 4:16 This isn't a problem for us as we can include another `div` inside of the `div` for the `corgi`.
 
 ```js
+// functions/gen-opengraph-image/src/image.js
+
 <body>
   <div id="corgi">
     <div>CORGIIIS</div>

@@ -12,6 +12,14 @@ Chris Biscardi: 00:00 Now that we have everything working, we can take a look at
 
 00:49 We will proxy re-write with status code of `200` with from `/opengraph` to `/.netlify/functions/process-url 200`.
 
+```
+# netlify.toml
+
+[build]
+  functions = "functions"
+  command = "make install"
+```
+
 **Now that we have deployed, we can use the new sub-path which is still cashed.**
 
 ![](../images/11-images/10-final-image.png)

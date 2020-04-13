@@ -10,6 +10,8 @@ cd gen-opengraph-image
 00:18 Inside of `gen-opengraph-image`, we need to initialize a new `package.json`. Our function needs to be in a file named the same as the directory. We'll create a `gen-opengraph-image.js`. We'll start in CommonJS syntax by exporting the name handler. Handler will be an `async` function that takes two arguments, the `event` to our function and the `context`.
 
 ```js
+// functions/gen-opengraph-image/gen-opengraph-image.js
+
 exports.handler = async function (event, context) {}
 ```
 

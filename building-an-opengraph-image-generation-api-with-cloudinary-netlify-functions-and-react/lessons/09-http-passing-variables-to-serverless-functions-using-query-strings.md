@@ -9,6 +9,8 @@ Chris Biscardi: 00:00 We can generate an image, but unfortunately, **we currentl
 00:44 In `gen-opengraph-image.js`, we're going to have to pass these in. Before we add our `script`, we're going to add another `script` tag. We'll use a template string to do what we need to do here. We've written a small `script` that will set the `{window.title}`, the `{window.tags}` and the `{window.author}` variables inside of our page. We can push this to make sure it works.
 
 ```js
+// functions/gen-opengraph-image/gen-opengraph-image.js
+
 await page.addScriptTag({
   content: `
   window.title = "Example title";

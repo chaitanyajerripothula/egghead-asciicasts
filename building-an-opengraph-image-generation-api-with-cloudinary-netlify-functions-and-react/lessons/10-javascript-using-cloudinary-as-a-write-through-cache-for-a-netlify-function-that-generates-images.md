@@ -43,6 +43,8 @@ https://res.cloudinary.com/sector/image/upload/v1583637123/og-images/img-1.png
 02:50 Note that we have the folder name and the file name, as well as the image in our `URL` generation here. Let's bring it back from the top. **We import Cloudinary and we're using the `V2` API, which is pretty important.** We're also importing `querystring,` which will help us take the variables that we have and pass them in.
 
 ```js
+// functions/process-url/process-url.js
+
 const cloudinary = require('cloudinary').v2
 const qs = require('querystring')
 ```

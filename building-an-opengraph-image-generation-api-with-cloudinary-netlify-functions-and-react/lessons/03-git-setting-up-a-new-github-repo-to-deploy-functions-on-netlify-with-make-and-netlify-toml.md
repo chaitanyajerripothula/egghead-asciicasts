@@ -23,6 +23,8 @@ touch index.html
 0:29 We'll also need that `netlify.toml` with a build section that specifies the directory the functions will live in and also the command we will use to build everything. In this case, because we will end up with multiple functions and those functions need to have their dependencies installed separately, we're going to use Make. **All our functions will live in the functions directory.**
 
 ```toml
+# netlify.toml
+
 [build]
   functions = "functions"
   command = "make install"
@@ -38,6 +40,8 @@ install:
 0:58 We don't have any packages to install yet. I'm going to use a CLI command called echo to `echo "installed"` to the console output. We can also `ga *` to add all the files in the current directory.
 
 1:13 After giving a commit message, we'll need to create the repo on GitHub. We can do this using the [hub](https://hub.github.com) CLI, which I have aliased to `git`, so I can run `git create` which calls `hub create`. Note that this gave us a `URL` of our new git repo on GitHub.
+
+### Terminal
 
 ```
 git commit -m"Adding all files"

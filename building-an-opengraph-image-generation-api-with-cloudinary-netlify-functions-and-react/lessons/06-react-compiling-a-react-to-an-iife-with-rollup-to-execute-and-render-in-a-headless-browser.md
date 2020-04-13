@@ -19,6 +19,8 @@ We'll also need [`rollup-plugin-babel`](https://github.com/rollup/rollup-plugin-
 00:46 In our `rollup.config.js` file, we'll import `rollup-plugin-babel` and use it with an `input` file of `src/image.js`, which is our component we just pulled out of CodeSandbox, with an output of `image.js`.
 
 ```js
+// functions/gen-opengraph-image/src/image.js
+
 const config = {
   input: 'src/image.js',
   output: [
@@ -50,7 +52,7 @@ yarn rollup -c rollup.config.js
 01:23 In `babelrc`, we can set the presets to `preset-env` and `preset-react`. `preeset-env` is pretty aggressive by default. We don't really have to worry about setting the options yet.
 
 ```js
-// .babelrc file
+// functions/gen-opengraph-image/.babelrc
 {
   "presets": ["@babel/preset-env", "@babel/preset-react"]
 }
@@ -63,7 +65,8 @@ yarn rollup -c rollup.config.js
 01:59 Since we're going to run this code inside of the Chromium instance, we can pull it in as a `string` using `FS`. `FS` allows us to read the file into memory when we start the function.
 
 ```js
-// gen-opengraph-image.js file
+// gen-opengraph-image.js
+
 const playwright = require('playwright-aws-lambda')
 const fs = require('fs')
 const script = fs.readFileSync('./image.js', 'utf-8')
@@ -92,7 +95,8 @@ install:
 02:44 We'll add `import { render } from "react-dom";` and we'll render on `corgi` Id.
 
 ```js
-// image.js file
+// gen-opengraph-image.js
+
 render(<App />, document.getElementById('corgi'))
 ```
 
@@ -123,7 +127,8 @@ If we look at the compiled `image.js` file, we can see that it doesn't include a
 03:23 After including `plugin-node-resolve` and also the `plugin-commonjs` module and rerunning `build`.
 
 ```js
-// rollup.config.js file
+// functions/gen-opengraph-image/rollup.config.js
+
 import babel from 'rollup-plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
@@ -194,7 +199,8 @@ export default config
 We've also excluded `node_modules`, so we don't get any more React warning due to the file size.
 
 ```js
-// rollup.config.js file
+// rollup.config.js
+
 const config = {
   input: 'src/image.js',
   output: [

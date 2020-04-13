@@ -1,6 +1,8 @@
 Chris Biscardi: 00:00 Now that we know our image generation function works in production, we're going to need it to **generate an actual OpenGraph image**. Luckily, we already have a site that we're deploying. In our `index.html` we'll replace it with a set of HTML.
 
 ```html
+<!-- index.html -->
+
 <meta charset="utf-8" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@chrisbiscardi" />

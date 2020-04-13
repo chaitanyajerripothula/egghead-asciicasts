@@ -9,6 +9,8 @@ Chris Biscardi: 00:00 **The open-graph image layout that we created in Figma is 
 00:47 **We'll also use a pragma at the top of the file** to specify that we want the JSX that we're writing to convert into this `JSX` function instead of `react.createElement`. I'm using a CSS from JS library because later, we're going to take this code and put it inside of a browser inside of a serverless function.
 
 ```js
+// functions/gen-opengraph-image/src/image.js
+
 /** @jsx jsx */
 Import React from "react"
 import { jsx, Global } from "@emotion/core";
@@ -49,7 +51,7 @@ import { jsx, Global } from '@emotion/core'
 import { jsx, Global } from '@emotion/core'
 
 /** **/
-;<Global
+<Global
   styles={{
     '*': {
       boxSizing: 'border-box',
@@ -59,6 +61,8 @@ import { jsx, Global } from '@emotion/core'
     },
   }}
 />
+
+// ... //
 ```
 
 02:41 If we ever didn't render this global component, the styles would get removed. Since we only render this once and it's not an application, this global component will never get removed. **The next thing we want to do is wrap this image text in a `div` of its own.**
