@@ -11,6 +11,8 @@ code .
 
 We'll start by initializing a new `package.json`. Then, we'll create an `index.html`. This `index.html` will deploy by default when we deploy it in Netlify, so we can check to make sure that the deployment worked.
 
+### Terminal
+
 ```
 yarn init -y
 touch index.html
