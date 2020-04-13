@@ -74,7 +74,7 @@ return {
 }
 ```
 
-2:19 Finally, there's a couple of magic properties that we need to set. We need to set `isBase64Encoded` to `true` in our response. We'll set the `headers` `Content-Type` to `image/png` and the `Content-Lengt` to the buffer `length`.
+2:19 Finally, there's a couple of magic properties that we need to set. We need to set `isBase64Encoded` to `true` in our response. We'll set the `headers` `Content-Type` to `image/png` and the `Content-Length` to the buffer `length`.
 
 ```js
 const screenshotBuffer = await page.screenshot({ clip: boundingRect })
