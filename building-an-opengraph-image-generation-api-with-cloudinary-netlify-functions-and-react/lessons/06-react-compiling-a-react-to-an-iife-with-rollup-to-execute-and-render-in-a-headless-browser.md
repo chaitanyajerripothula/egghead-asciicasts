@@ -25,7 +25,19 @@ const config = {
 
 00:58 If we try to run `yarn rollup -c rollup.config.js`, we can see that we haven't installed `babel-core`. We'll also want to install `babel-preset-react` and, optionally, `babel-preset-env`.
 
+### Terminal
+
+```
+yarn add --dev @babel/core @babel/preset-react
+```
+
 01:10 We can try running the `yarn rollup -c rollup.config.js` again. In this case, we run into an`unexpected token`. This is an`unexpected token`because`rollup-plugin-babel` without any config doesn't understand what JSX is.
+
+### Terminal
+
+```
+yarn rollup -c rollup.config.js
+```
 
 01:23 In `babelrc`, we can set the presets to `preset-env` and `preset-react`. `preeset-env` is pretty aggressive by default. We don't really have to worry about setting the options yet.
 
