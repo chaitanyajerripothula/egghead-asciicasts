@@ -6,6 +6,8 @@ Chris Biscardi: 0:00 The next thing we're going to do is install [Playwright](ht
 
 0:37 We're going to use [Playwright AWS Lambda](https://github.com/alixaxel/chrome-aws-lambda). **Playwright AWS Lambda only supports Chromium, but it'll work in our Netlify functions environment, which is what we need**.
 
+### Terminal 
+
 ```
 npm install chrome-aws-lambda --save-prod
 ```
