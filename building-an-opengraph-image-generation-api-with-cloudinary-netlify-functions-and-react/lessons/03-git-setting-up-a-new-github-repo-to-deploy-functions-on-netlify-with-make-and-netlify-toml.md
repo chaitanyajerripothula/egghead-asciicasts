@@ -2,6 +2,8 @@ Chris Biscardi: 0:00 We've designed and implemented the React component for our 
 
 0:14 Next, we'll use the VS Code CLI to open this directory.
 
+### Terminal
+
 ```bash
 mkdir egghead-opengraph-images
 cd egghead-opengraph-images

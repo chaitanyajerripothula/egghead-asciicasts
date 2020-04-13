@@ -128,6 +128,8 @@ headers: {
 
 05:14 Remember that the space in the front needs to be a tab and each line is run in its own `environment`. That's why we're using `&&` to chain calls together.
 
+### Terminal
+
 ```bash
 # commands
 cd functions/gen-opengraph-image && npm run build

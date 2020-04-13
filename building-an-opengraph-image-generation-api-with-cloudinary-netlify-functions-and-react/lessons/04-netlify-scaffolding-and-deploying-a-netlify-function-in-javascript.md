@@ -1,5 +1,7 @@
 Chris Biscardi: 00:01 **Now that we have our site deploying, we'll create our first function.** This function will be the function that generates the OpenGraph image using [Playwright](https://github.com/microsoft/playwright). We'll create a functions directory and inside of that directory, create a directory that will house our function.
 
+### Terminal
+
 ```bash
 mkdir gen-opengraph-image
 cd gen-opengraph-image

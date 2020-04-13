@@ -6,7 +6,7 @@ Chris Biscardi: 0:00 The next thing we're going to do is install [Playwright](ht
 
 0:37 We're going to use [Playwright AWS Lambda](https://github.com/alixaxel/chrome-aws-lambda). **Playwright AWS Lambda only supports Chromium, but it'll work in our Netlify functions environment, which is what we need**.
 
-### Terminal 
+### Terminal
 
 ```
 npm install chrome-aws-lambda --save-prod
@@ -93,6 +93,8 @@ return {
 2:30 Interestingly, we have to set the buffer `length` as a `string` in `Content-Length` and not as a number. Also note that we don't pass the buffer directly back in the body of the response. We `toString()` it to a `base64` representation.
 
 2:43 If we open a Node REPL and we try to require our `/gen-opengraph-image.js`, we can see that we need to install `playwright-core`. `playwright-core` is an additional package that our third party package depends on. If we run the `handle()` in a Node REPL by requiring the file and destructuring the handler, we can see that we've mistyped something.
+
+### Terminal
 
 ```bash
 node
