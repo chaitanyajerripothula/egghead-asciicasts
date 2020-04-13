@@ -29,16 +29,16 @@ let returnSomething = (someThing: thing) => {
 };
 console.log(returnSomeThing("coolGuy"));  // coolGuy
 ```
-You probably want the function to behave differently depending on the type, so let's use a **type guard**. If `typeof someThing` equals a `string`, or `typeof someThing` equals a `number`, or `typeof someThing` equals a `boolean`, `console.log("somthing = ", someThing)`.
+You probably want the function to behave differently depending on the type, so let's use a **type guard**. If `typeof someThing` equals a `string`, or `typeof someThing` equals a `number`, or `typeof someThing` equals a `boolean`, `console.log("something = ", someThing)`.
 
 **demo.js**
 ``` javascript
-let thing = string | number | string[] | boolean;
+type thing = string | number | string[] | boolean;
 let returnSomething = (someThing: thing) => {
   if (typeof someThing === "string" ||
       typeof someThing === "number" ||
       typeof someThing === "boolean") {
-        console.log("somthing = ", someThing);
+        console.log("something = ", someThing);
       }
 }
 ```
