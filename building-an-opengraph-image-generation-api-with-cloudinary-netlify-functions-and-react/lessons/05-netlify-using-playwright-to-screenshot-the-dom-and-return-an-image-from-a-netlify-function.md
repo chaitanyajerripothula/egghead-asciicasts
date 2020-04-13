@@ -2,7 +2,7 @@ Chris Biscardi: 0:00 The next thing we're going to do is install [Playwright](ht
 
 0:14 **This is a lot, and our deploy will actually fail if our package size gets too big.** If you look in packages, you can see that there's `Playwright Chromium`, `Playwright Firefox`, and `Playwright Webkit`, which are each different packages corresponding to their respective browsers.
 
-0:27 We can shrink the package size a little bit by using one of these. Currently, the Playwright team [doesn't support a build for Lambda](https://github.com/microsoft/playwright/issues/626), but they do offer all of their build scripts for somebody else to handle it.
+0:27 We can shrink the package size a little bit by using one of these. Currently, the Playwright team doesn't support a build for Lambda, but they do offer all of their build scripts for somebody else to handle it.
 
 0:37 We're going to use [Playwright AWS Lambda](https://github.com/alixaxel/chrome-aws-lambda). **Playwright AWS Lambda only supports Chromium, but it'll work in our Netlify functions environment, which is what we need**.
 
