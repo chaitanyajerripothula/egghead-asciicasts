@@ -1,6 +1,6 @@
 Chris Biscardi: 00:00 We can generate an image, but unfortunately, **we currently can't change the title, we can't change the tags and we can't change the username**. If you want this exact image, what we have right now is great. If you don't and you want to change the title, we need to make some adjustments.
 
-![](../images/09-images/09-image-card.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898824/transcript-images/09-image-card.jpg)
 
 00:16 **We'll need to make changes in two places:** One is the React component we're rendering to the page to generate the image. The second is in the Playwright `script` where we render the actual component. We're going to take advantage of the `window` here.
 
@@ -22,7 +22,7 @@ await page.addScriptTag({
 
 01:02 Now that our site is deployed, **we can see that the window `variables` are being used in our new OpenGraph cards, but we can't yet control it from the outside**.
 
-![](../images/09-images/09-preview.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898823/transcript-images/09-preview.jpg)
 
 To do that, we'll parse the query `string`. If you remember the event argument from our `handler`, that's where our query `string` parameters come in.
 
@@ -78,6 +78,6 @@ await page.evaluate({
 
 03:49 Now that we've changed our `script` tag values to be wrapped in the proper quotes, let's refresh the function again. We can see that now we've added our quotes, we can pass in any values we want in the query `string`.
 
-![Final Image](../images/09-images/09-final.png)
+![Final Image](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898819/transcript-images/09-final.jpg)
 
 If we put nothing in the query `string`, we get no title, the tags are empty and the author's empty.

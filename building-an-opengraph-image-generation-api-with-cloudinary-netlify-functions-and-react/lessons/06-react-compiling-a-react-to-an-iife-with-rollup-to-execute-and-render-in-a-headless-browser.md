@@ -1,6 +1,6 @@
 Chris Biscardi: 00:00 If we hit our serverless function now, it'll run Playwright, which runs Headless Chromium, and lets us take a screenshot of the resulting DOM, then returns that and shows us the image that we've captured.
 
-![](../images/06-images/06-corig-screenshot.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898820/transcript-images/06-corig-screenshot.jpg)
 
 00:10 **The photo we've taken right now is just a string in the DOM.** What we want is our Open Graph image that we coded up in CodeSandbox and designed in Figma. We'll start by creating a new file in a new directory. Here we have `image.js` in `src`.
 
@@ -237,6 +237,6 @@ const config = {
 
 05:33 If we look at our image now, that's returned from the serverless function, we can see **that we're successfully taking and returning our screenshot.**
 
-![](../images/06-images/06-viewport.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898822/transcript-images/06-viewport.jpg)
 
 The sizing isn't quite right, but we'll configure setting the viewport in the next video.

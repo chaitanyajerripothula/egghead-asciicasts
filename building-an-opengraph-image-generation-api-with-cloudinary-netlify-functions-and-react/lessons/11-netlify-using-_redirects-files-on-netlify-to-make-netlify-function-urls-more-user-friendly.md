@@ -2,7 +2,7 @@ Chris Biscardi: 00:00 Now that we have everything working, we can take a look at
 
 00:06 Right now, people need to put in the Netlify subpath, remember the function `path`, and also use the query `string`. **To change the Netlify subpath we can enable a domain on Netlify.**
 
-![](../images/11-images/10-netlify-url.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898846/transcript-images/10-netlify-url.jpg)
 
 00:20 But what we are going to go over, is using `redirects` to trim out the function it self, what we want to end up with is replacing the `netlify/functions/gen-opengraph-image` with `opengraph`.
 
@@ -22,4 +22,4 @@ Chris Biscardi: 00:00 Now that we have everything working, we can take a look at
 
 **Now that we have deployed, we can use the new sub-path which is still cashed.**
 
-![](../images/11-images/10-final-image.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898841/transcript-images/10-final-image.jpg)

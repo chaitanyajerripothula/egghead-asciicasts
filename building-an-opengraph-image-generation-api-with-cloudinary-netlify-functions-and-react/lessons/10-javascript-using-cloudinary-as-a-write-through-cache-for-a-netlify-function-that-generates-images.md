@@ -10,17 +10,17 @@ Chris Biscardi: 00:01 Now that we can generate anything we want with this open-g
 
 01:05 **We'll start by uploading an image.** You can see in my dashboard, I've uploaded one image into a folder called `og-images`.
 
-![](../images/10-images/10-cloudinary.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898835/transcript-images/10-cloudinary.jpg)
 
 I've done that by clicking the **right hand upload button** over here, where you can drag and drop whatever you want.
 
-![](../images/10-images/10-upload.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898842/transcript-images/10-upload.jpg)
 
 01:17 My image is a `1px` transparent PNG. This is because it's 300 bytes, **which is really small, and we're not going to use this image anyway**. Since we're doing all of the image generation in our function, I just wanted to make this image, which will get passed to our function for processing, as small as possible.
 
 01:37 Note the name of the image, `img1`. It's a PNG and it's in the folder `og-images`. If we click on Manage where you get the `URL` in a different way, you can see that there's a `version` number here.
 
-![](../images/10-images/10-dashboard.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898839/transcript-images/10-dashboard.jpg)
 
 01:50 **That `version` number is important because that `version` number is something that we'll use in our functions to make sure that we can invalidate the cache if we upload a new generation function.** Since Cloudinary doesn't really know other than the `URL` whether our function has changed on Netlify, we need to use this `version` as a cache invalidation technique.
 
@@ -142,7 +142,7 @@ cd functions/process-url && npm i
 
 05:41 Back on our deploys page, which we've been watching as we go through this, we can go to the **Deploy Settings** and click the **Environment**.
 
-![](../images/10-images/10-env.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898846/transcript-images/10-env.jpg)
 
 These `ENV` variables are the variables that we'll need to set. That is, we're going to need to set the image `version`, which I've prepended my `name` to because I intend to have more versions, the `CLOUDINARY_KEY`, and the `CLOUDINARY_SECTRET`.
 
@@ -152,7 +152,7 @@ These `ENV` variables are the variables that we'll need to set. That is, we're g
 
 06:42 Note that we're changing the `URL` to point to Netlify functions `process-url`. Note how long this takes. It's also redirected us. If you look at the `URL`, we're looking at `res.cloudinary.com` right now.
 
-![](../images/10-images/10-image-url.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898849/transcript-images/10-image-url.jpg)
 
 06:55 **If we do this again, it loads almost instantly. This is how we know it's been cached.** Also note that while `gen-opengraph-image` handles an un-url-encoded `@` symbol correctly processed `URL`, having sent it through more different `URLs` and the signing doesn't.
 

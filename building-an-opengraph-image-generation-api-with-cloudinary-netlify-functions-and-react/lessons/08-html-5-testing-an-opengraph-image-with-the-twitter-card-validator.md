@@ -21,13 +21,13 @@ Chris Biscardi: 00:00 Now that we know our image generation function works in pr
 
 00:36 **We'll take the production URL and hit Preview**. Note that you might have to hit this twice, as Twitter will go out and make the request and cache it.
 
-![](../images/08-images/08-twitter-preview.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898852/transcript-images/08-twitter-preview.jpg)
 
 00:44 This is not exactly how it's going to look when we share it on Twitter, because there are **some differences between the Card validator and the way that the representation of the dimensions shows up in the tweet unfurl**.
 
 00:54 Let's make an actual tweet. Once we're on Twitter, we can go to the Tweet button and paste in our `URL`. I'll say something like, _"Just testing, going to delete this in a second."_
 
-![](../images/08-images/08-tweet.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898852/transcript-images/08-tweet.jpg)
 
 01:07 **Now we can see that my OpenGraph image has shown up.** It looks quite nice. Taking a look for the screenshot I took. I'm pretty happy with the way that our OpenGraph image turned out.
 

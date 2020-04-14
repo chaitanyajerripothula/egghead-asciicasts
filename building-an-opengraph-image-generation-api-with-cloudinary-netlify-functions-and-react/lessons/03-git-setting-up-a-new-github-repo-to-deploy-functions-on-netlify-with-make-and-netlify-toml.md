@@ -56,6 +56,6 @@ git create
 
 2:22 If we go back to our new `URL`, we can see that it worked. Also note that if we go to `Makefile` in the `URL`, our `Makefile` is being served as part of our application. We won't have any secrets here, so it doesn't matter for us. It's nice to show the open source code directly available on the site.
 
-![Netlify](../images/03-images/03-netlify-build.png)
+![Netlify](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898836/transcript-images/03-netlify-build.jpg)
 
 2:40 **If you wanted to hide this code, you could put the `index.html` file in a subdirectory and change the publish directory.**

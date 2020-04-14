@@ -141,6 +141,6 @@ We've included this additional `div` because when we render into `corgi`, we wan
 
 4:43 Now if we refresh our function `URL`, we can see a screenshot of corgis.
 
-![](../images/05-images/05-corig-screenshot.png)
+![](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1586898807/transcript-images/05-corig-screenshot.jpg)
 
 Note that we haven't specified any sizing. We don't have any serious content here, so the screenshot looks a little weird. It looks a little bit too wide. It looks a little small as well. **We'll fix this when we work on porting the component into Playwright.**
