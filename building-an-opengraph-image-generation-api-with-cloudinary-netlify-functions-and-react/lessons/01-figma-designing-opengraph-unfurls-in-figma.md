@@ -106,4 +106,4 @@ You can see that if I have Twitter maybe on half size of my screen, it's a littl
 
 11:16 If this was going to be your final image and you were going to export it from Figma, you might want to spend more time on the details. In this case, I just wanted to place everything on the page and understand vaguely what I'm going for when I start building the React component.
 
-11:30 **Again, the goal is to not spend too much time inside of Figma, but rather just get our ideas down on paper so that we can communicate them to anybody else that needs them**. Also, we have a reference for what we want to do when we build the React component.
+11:30 Again, the goal is to not spend too much time inside of Figma, but rather just get our ideas down on paper so that we can communicate them to anybody else that needs them. Also, we have a reference for what we want to do when we build the React component.
