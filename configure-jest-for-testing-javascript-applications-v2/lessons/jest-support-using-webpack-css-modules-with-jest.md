@@ -18,7 +18,7 @@ test('renders, () => {
 [01:04] It would be nice if we had some way to get that `autoScalingText` to appear as our `className` even though at build time Webpack is going to generate some generated class name. What we're going to do here is I'm going to NPM install as a dev dependency identity obj proxy.
 
 ```bash
-npm install --save dev identity obj-proxy
+npm install --save dev identity-obj-proxy
 ```
 
 [01:23] With that installed, now I'm going to go to jest.config.js. I want to match all of the imports for a .module.css because those are the ones that are going to actually have an object with those styles applied.
