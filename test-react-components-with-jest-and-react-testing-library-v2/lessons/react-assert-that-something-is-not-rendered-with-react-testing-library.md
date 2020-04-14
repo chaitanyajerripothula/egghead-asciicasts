@@ -23,7 +23,7 @@ Oh dear. We have an error. What's going on here? It's expecting get my role aler
 
 [00:55] This is nice because it gives us this really nice output indicating to us what the problem is and a potential fix. It isn't very nice when that's your intended outcome is to not have any element come back.
 
-[01:07] That is why `queryByRoll` exists. Any query that starts with the text `query` is going to return null instead of throwing an error. if we use `queryByRoll` and then open up our tests, our tests are passing now.
+[01:07] That is why `queryByRole` exists. Any query that starts with the text `query` is going to return null instead of throwing an error. if we use `queryByRole` and then open up our tests, our tests are passing now.
 
 ```js
 test('entering an invalid value shows an error message', () => {

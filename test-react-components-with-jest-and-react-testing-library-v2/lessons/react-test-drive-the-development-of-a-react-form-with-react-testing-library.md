@@ -11,7 +11,7 @@ test('renders a form with title, content, tags, and a submit button', () => {
 })
 ```
 
-[00:31] Now we can `render` that `Editor` and from that, we're going to need to `getBYLabelText` to get our form elements and `getByText` to get our submit button. We'll `getByLabelText(/title/i)` and we'll have a couple others here. One for `content`, another for `tags`, and then we'll have a `getByText` for our `submit` button.
+[00:31] Now we can `render` that `Editor` and from that, we're going to need to `getByLabelText` to get our form elements and `getByText` to get our submit button. We'll `getByLabelText(/title/i)` and we'll have a couple others here. One for `content`, another for `tags`, and then we'll have a `getByText` for our `submit` button.
 
 ```js
 test('renders a form with title, content, tags, and a submit button', () => {
