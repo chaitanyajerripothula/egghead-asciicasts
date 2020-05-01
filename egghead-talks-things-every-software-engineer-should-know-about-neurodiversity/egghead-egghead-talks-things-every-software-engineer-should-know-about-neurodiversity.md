@@ -12,7 +12,7 @@ Nick: [1:22] Great. Thank you so much. Everybody hear me, see my screen OK? I'll
 
 [1:32] I'm here to talk to you today about **Things Every Software Engineer Should Know About Neurodiversity.** You might be forgiven for assuming that this is going to be a talk about how to write code with neurodivergent people in mind. That's not what this is.
 
-![Neurodiversity Slide](./images/01-neurodiversity-slide.png)
+![Neurodiversity Slide](../images/01-neurodiversity-slide.png)
 
 
 [1:47] This is a talk that I like to give to groups where I know there are a lot of people living with undiagnosed neurodivergent conditions. I myself didn't discover that I was autistic or ADHD until I was in my mid-30s, and it improved my life measurably. Since then, one of the things I like to do is give as many people those _ah-ha_ moments as I can.
