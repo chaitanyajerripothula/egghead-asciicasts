@@ -121,7 +121,7 @@ Who am I? Before I get too far into this, why should you listen to me?
 
 [12:54] Complex PTSD is a variant that is sort of coming out now and being recognized for the first time. **Where normal PTSD is what happens when you have a bad experience of some sort, it's really bad, complex PTSD is when you experience trauma for a sustained period of time.**
 
-![complex PTSD](./images/)
+![complex PTSD](./images/12-complex-ptsd-slide.png)
 
 [13:11] It's not that you have one bad experience, it's that every day you woke up and you felt this horrible thing. You went to bed and you woke up the next day and you felt this horrible thing. It's an emotional state that you were in.
 
@@ -173,7 +173,7 @@ Who am I? Before I get too far into this, why should you listen to me?
 
 [18:19] **Toxic shame is deeply related to all of this and related to CPTSD and rejection sensitivity.** Shame is like an emotional tool that we use to teach people how we want to be treated in public.
 
-![toxic shame](../images/19-toxic-shame-slide.png)
+![toxic shame](./images/19-toxic-shame-slide.png)
 
 [18:29] You give somebody shame when they do something that hurts you. But if you grow up constantly being corrected, constantly being shamed, then what you're learning is just existing is something that you should be ashamed of.
 
