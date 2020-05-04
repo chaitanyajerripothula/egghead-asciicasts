@@ -1,0 +1,16 @@
+# Summary
+
+* [Bulk insert and export data with csv files](./lessons/01_postgresql-bulk-insert-and-export-data-with-csv-files.md)
+* [On conflict do something clause](./lessons/02_postgresql-on-conflict-do-something-clause.md)
+* [Casting Types in SQL](./lessons/03_postgresql-casting-types-in-sql.md)
+* [Create a Custom Enum Type ](./lessons/04_postgresql-create-a-custom-enum-type.md)
+* [Profiling Queries with Explain Analyze](./lessons/05_postgresql-profiling-queries-with-explain-analyze.md)
+* [Common Table Expressions in SQL](./lessons/06_postgresql-common-table-expressions-in-sql.md)
+* [Conditional returns with case / then](./lessons/07_postgresql-conditional-returns-with-case-then.md)
+* [Create Variables and Blocks with Do / Declare](./lessons/08_postgresql-create-variables-and-blocks-with-do-declare.md)
+* [Perform Multiple Steps in One with Transactions](./lessons/09_postgresql-perform-multiple-steps-in-one-with-transactions.md)
+* [Filter Grouped and Aggregated Data with Having](./lessons/10_postgresql-filter-grouped-and-aggregated-data-with-having.md)
+* [Create and Safely Hande Nulls in SQL](./lessons/11_postgresql-create-and-safely-hande-nulls-in-sql.md)
+* [Aggregate Inline filters in SQL](./lessons/12_postgresql-aggregate-inline-filters-in-sql.md)
+* [Work with JSON Data in SQL](./lessons/13_egghead-work-with-json-data-in-sql.md)
+* [Pattern Matching and Regular Expressions in SQL](./lessons/14_postgresql-pattern-matching-and-regular-expressions-in-sql.md)
