@@ -1,7 +1,5 @@
 # Profiling Queries with Explain Analyze
 
-[Video link](https://www.egghead.io/lessons/postgresql-profiling-queries-with-explain-analyze)
-
 Instructor: [0:00] You can't have a course on advanced SQL without talking about query performance and optimizations. Let's jump right in and write `explain select * from users;`. 
 
 ```postgres
