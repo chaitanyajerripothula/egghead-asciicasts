@@ -100,7 +100,7 @@ Myk: [01:22] Great. Thank you so much. Everybody hear me, see my screen OK? I'll
 
 [13:22] With CPTSD, what happens is you get emotional flashbacks. Your boss might give you some feedback on your work, and suddenly you're remembering how you had a teacher that traumatize you and made you feel so small every time you made a mistake. Now, you're in your office trying not to cry because you got good feedback and you don't know what's going on.
 
-[13:42] It's called an emotional flashback. It's really devastating. I'm going to recommend again Pete Walker's "Complex PT[SD: F]rom Surviving to Thriving," is a book that I recommend everybody to read, honestly. It talks a lot about this.
+[13:42] It's called an emotional flashback. It's really devastating. I'm going to recommend again Pete Walker's "Complex PTSD: From Surviving to Thriving," is a book that I recommend everybody to read, honestly. It talks a lot about this.
 
 [13:57] That's it for diagnosed conditions that I want to mention. There are others. Again, it's not exhaustive. More interestingly to me at least, I want to talk about neurodivergent traits. We can talk about ADHD but ADHD is just a term for people who have a set of traits that happen or occur together. Then we circle that and we call that ADHD.
 
@@ -120,7 +120,7 @@ Myk: [01:22] Great. Thank you so much. Everybody hear me, see my screen OK? I'll
 
 [16:22] A lot of autistic people can. A lot of autistic people have really good visual reasoning and are able to not only call up a memory but to make up an artificial scene and even play it through time and watch how it works. Temple Grandin famously did this and this lead to a lot of her career success.
 
-[16:43] Sleep problems. If you're neurodivergent, you probably have sleep problems, chronic insomnia, delayed sleep-phased syndrome, chronic fatigue which compounds everything. Maybe you need more sleep than normal. Maybe you can't fall asleep before[ 4:00] AM but you still got to be at work on time. These are things that a lot of your coworkers are struggling with.
+[16:43] Sleep problems. If you're neurodivergent, you probably have sleep problems, chronic insomnia, delayed sleep-phased syndrome, chronic fatigue which compounds everything. Maybe you need more sleep than normal. Maybe you can't fall asleep before 4:00 AM but you still got to be at work on time. These are things that a lot of your coworkers are struggling with.
 
 [17:00] Digestive problems. Do we all know that irritable bowel syndrome is a catch-all term for you get stomachaches and your poop sucks? Doctors don't know what it is. It's like inflammatory thing that seems to be correlated with stress.
 
