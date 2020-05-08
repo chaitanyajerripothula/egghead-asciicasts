@@ -1,7 +1,5 @@
 # Filter Grouped and Aggregated Data with Having
 
-[Video link](https://www.egghead.io/lessons/postgresql-filter-grouped-and-aggregated-data-with-having)
-
 Instructor: [0:00] We have a table called `purchases`, and it keeps track of all the orders that take place by our users. As we can see, we have a `date`, a `user_handle`, a `sku`, and the `quantity`. Each row inside of this table is going to represent each checkout per item.
 
 ```postgres
@@ -43,9 +41,9 @@ LINE 1: ...ndle, sum(quantity) as total from purchases where sum(quanti...)
 
 [1:00] Let's take a look at this query. What I ultimately want to return is all of the users that have purchased more than five total items. It doesn't have to be five different products, but I care about the total amount of items purchased. It has to be greater than five.
 
-[1:16] Thinking back to our answers, we're looking for that first users that I inserted through rows data for, not the second user. We are trying to filter using the `where` clause, where the sum of quantities is greater than five. However, our error here is telling us that we cannot filter aggregates by the WHERE. We actually need to use the having clause.
+[1:16] Thinking back to our answers, we're looking for that first user that I inserted through rows data for, not the second user. We are trying to filter using the `where` clause, where the sum of quantities is greater than five. However, our error here is telling us that we cannot filter aggregates by the WHERE. We actually need to use the having clause.
 
-[1:36] I'll remove the `where` clause, and then after the `group by` we add the `having` clause for the same sum greater than five expression. 
+[1:36] I'll remove the `where` clause, and then after the `group by` we add the `having` clause for the same sum greater than five expressions. 
 
 ```postgres
 postgre=# select user_handle, sum(quantity) as total from purchases group by user_handle having sum(quantity) > 5;
