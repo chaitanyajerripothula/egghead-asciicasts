@@ -1,7 +1,5 @@
 # Common Table Expressions in SQL
 
-[Video link](https://www.egghead.io/lessons/postgresql-common-table-expressions-in-sql)
-
 Instructor: [0:00] Common Table Expressions, also referred to as a `cte` for short, is created by using the `with` keyword, assigning it to a value, and then adding a query within parentheses.
 
 ```postgres
@@ -25,7 +23,7 @@ Let's look at this query again. We need to start it off with a `with` keyword. T
 
 [0:49] Next stop, we `select * from` our alias CTE `dates` and we see that we get date and the current time. The biggest use case I've seen cte's be used for is the ability to break out complex queries into smaller pieces. Really, almost any time you need to write a subquery, you can potentially break that out and put it at the top of your query and then reference it down below.
 
-[1:11] My members table is intended to show the history of all of my users. The primary key here is not going to be just `user_handle`, it's going to be some combination of either `user_handle`, the `current_time` or my `start_date`. This is useful within an app that wants to show changes to a users profile over time, for example, a UI that shows that they've changed their name or their email.
+[1:11] My member's table is intended to show the history of all of my users. The primary key here is not going to be just `user_handle`, it's going to be some combination of either `user_handle`, the `current_time` or my `start_date`. This is useful within an app that wants to show changes to a users profile over time, for example, a UI that shows that they've changed their name or their email.
 
 ```postgres
 postgres=# \d members
@@ -39,7 +37,7 @@ postgres=# \d members
   email       | text |           |          |
 ```
 
-[1:33] This however can be tricky when trying to determine the current state of a user. How can you know the earliest `start_date` row and also the current `email` row when there could be n number of rows for one user?
+[1:33] This, however, can be tricky when trying to determine the current state of a user. How can you know the earliest `start_date` row and also the current `email` row when there could be n number of rows for one user?
 
 [1:47] I've inserted two rows here. They're both for the same user, as you can see by the duplicate user_handles. However, their email has changed. There are also different start_dates. The earlier one has an end_date, meaning, they canceled their account but obviously came back. When they did, it was with this new email.
 
@@ -49,7 +47,7 @@ INSERT 0 1
 postgres=# insert into members values ('2019-02-02', null, '57bd8cd8-7115-11e9-a923-1681be663d3e', 'tyler', 'new@gmail.com');
 ```
 
-[2:05] My goal here is to show to the user the earliest that they signed up, as well as the most current email. In the informaorder to get tion out, we need to join the members table onto itself. We're going to do that by using a subquery that will distinct down the `user_handle`.
+[2:05] My goal here is to show to the user the earliest that they signed up, as well as the most current email. In order to get that information out, we need to join the members table onto itself. We're going to do that by using a subquery that will distinct down the `user_handle`.
 
 [2:23] Our original `select` up top is going to pull out the email from the subquery of members, which returns the most recent record for the user and then use the main aggregate function to pull out the earliest `start_date`.
 
@@ -65,7 +63,7 @@ postgres-# using(user_handle) group my mr.email;
 (1 row)
 ```
 
-[2:37] Don't worry so much about what this query's doing to get this data. The point that I want you to take away from this is imagine what this query will look like as we join with other tables or possibly needed to add additional subqueries.
+[2:37] Don't worry so much about what this query's doing to get this data. The point that I want you to take away from this is to imagine what this query will look like as we join with other tables or possibly needed to add additional subqueries.
 
 [2:51] We could easily break out this subquery part and alias it to a cte. I've already put that all together here, so I'll paste it. 
 
