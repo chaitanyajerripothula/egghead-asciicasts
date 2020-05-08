@@ -1,7 +1,5 @@
 # Create Variables and Blocks with Do / Declare
 
-[Video link](https://www.egghead.io/lessons/postgresql-create-variables-and-blocks-with-do-declare)
-
 Instructor: [0:00] We have a member's table that has a `start_date`, `end_date`, `user_handle`, `first_name`, and `email`. `start_date` and `end_date` are `date` types, `user_handle` is a `uuid`, and `first_name` and `email` are `text`. 
 
 ```postgres
@@ -50,7 +48,7 @@ Now, let's slow down and break down what's happening here.
 
 [1:32] Next is where we actually define a variable. The first is the variable name, in our case `handle`, next we define its type, which is contrary to Typescript, Java, C#, where the type is defined first. After that, we do `:=`, which is how we assign a value to a variable, closing this statement with a `;`.
 
-[1:52] In our case, this is the `uuid`, and this is the value uuid type, our generated `user_handle`. Now, we can reference this variable anywhere within our DO block. Next stop we say `begin`. Begin initiates a transaction block, which means that all statement after a begin command will be executed in a similar transaction.
+[1:52] In our case, this is the `uuid`, and this is the value uuid type, our generated `user_handle`. Now, we can reference this variable anywhere within our DO block. Next stop we say `begin`. Begin initiates a transaction block, which means that all statements after a begin command will be executed in a similar transaction.
 
 [2:11] We'll close this transaction with `end` here. The end command in Postgres is an extension that is equivalent to command. Finally, inside of our `insert into members`, you can see we're referring that `handle` variable.
 
@@ -93,7 +91,7 @@ postgres=# select * from members where user_handle = '099ab71b-53ad-4fc6-823a-5f
  2020-04-01  |           | 82cb8717-3621-4373-8796-c3acc1699b86 | Melissa    | melissa@gmail.com
 ```
 
-Look it up and, yeah. Her start date is April 1st, and that's the same as mine. Let's look at another example of what we can do with our variables, specifically the `startDate` variable that received it's value from the selected `do` statement.
+Look it up and, yeah. Her start date is April 1st, and that's the same as mine. Let's look at another example of what we can do with our variables, specifically the `startDate` variable that received its value from the selected `do` statement.
 
 ```postgres
 postgres=# do $$
