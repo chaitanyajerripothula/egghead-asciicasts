@@ -1,7 +1,5 @@
 # Conditional returns with case / then
 
-[Video link](https://www.egghead.io/lessons/postgresql-conditional-returns-with-case-then)
-
 Instructor: [0:00] The SQL `case` expression is a generic conditional expression. It's similar to the if/else statements you'll find in other programming languages. As you see here, we're doing SELECT first name, and then we say `case when status is null then 'member' else status end` from our user's table.
 
 ```postgres
