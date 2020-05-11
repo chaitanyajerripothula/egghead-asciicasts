@@ -18,7 +18,7 @@ CREATE TYPE
 ```postgres
 postgres=# select * from users limit 1;
               user_handle             | first_name | last_name |         email          
---------------------------------------+------------+-----------+-----------------------
+--------------------------------------+------------+-----------+----------------------
 57bd72d4-7115-11e9-a923-1681be663d3e  | Lucie      | Smith     | Lucie-Clark@gmail.com 
 ```
 
