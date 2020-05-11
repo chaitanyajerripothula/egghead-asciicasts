@@ -1,7 +1,5 @@
 # Create and Safely Hande Nulls in SQL
 
-[Video link](https://www.egghead.io/lessons/postgresql-create-and-safely-hande-nulls-in-sql)
-
 Instructor: [0:00] Let's create a table called `posts`. This table is going to hold some blog posts of ours to be viewed later. As you can see, we're going to have an `id`, a `title`, an `excerpt`, a `body`. Then, let's add some dates like `created_at` and `updated_at`. Let's enter some data into our posts table, and then, let's `select` and see what we've got to work with here.
 
 ```postgres

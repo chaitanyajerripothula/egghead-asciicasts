@@ -1,7 +1,5 @@
 # Create a Custom Enum Type 
 
-[Video link](https://www.egghead.io/lessons/postgresql-create-a-custom-enum-type)
-
 Instructor: [0:00] Data integrity is something you should always have in mind. It just makes writing and debugging queries so much easier. We ensure integrity by adding constraints to our tables like not null, unique, adding primary keys, and also using the correct types for our columns.
 
 [0:16] One powerful feature of SQL is the ability to add custom types. Let's write `create type user_status as enum`, then we're going to give it three string values -- `member`, `instructor`, and `developer`. Once you've run this, you'll see it is as `CREATE TYPE`.

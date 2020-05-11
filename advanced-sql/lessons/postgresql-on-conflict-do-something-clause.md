@@ -1,7 +1,5 @@
 # On conflict do something clause
 
-[Video link](https://www.egghead.io/lessons/postgresql-on-conflict-do-something-clause)
-
 Instructor: [0:00] Let's say that you have an eCommerce site and you allow the creation of an account to happen during the checkout process. Whenever a user signs up, we store some basic info about that person into our users table.
 
 ```postgres
@@ -56,7 +54,7 @@ postgres=# select * from users where email = 'Lucie-Jones@gmail.com';
 
 [2:30] We reference them by this excluded terminology. By saying `first_name = excluded.first_name`, we're saying update the row that has the conflict with the excluded value or the value that's coming in on the insert statement.
 
-[2:43] We're basically guarantying that we are doing either an insert or an update, which is also commonly known as an `upsert`. Taking this even one step further because it's cool and interesting to note that we can use a `shere` clause within this update as well.
+[2:43] We're basically guarantying that we are doing either an insert or an update, which is also commonly known as an `upsert`. Taking this even one step further because it's cool and interesting to note that we can use a `where` clause within this update as well.
 
 [2:59] Backing up, we can alias the users table with an U. Then we can say `where u.first_name` is not Lucy. 
 
@@ -65,7 +63,7 @@ postgres=# insert into users as u values (uuid_generate_v4(), 'Lucie', 'Cook', '
 INSERT 0 0
 ```
 
-This has a couple conditions now, right? If there's a conflict with email, do update setting these columns to the incoming data. Unless, the original row's first name is Lucy, then don't update the row.
+This has a couple of conditions now, right? If there's a conflict with email, do update setting these columns to the incoming data. Unless, the original row's first name is Lucy, then don't update the row.
 
 ```postgres
 postgres=# select * from users where email = 'Lucie-Jones@gmail.com';

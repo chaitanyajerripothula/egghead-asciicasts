@@ -1,7 +1,5 @@
 # Pattern Matching and Regular Expressions in SQL
 
-[Video link](https://www.egghead.io/lessons/postgresql-pattern-matching-and-regular-expressions-in-sql)
-
 Instructor: [0:00] Looking at our `users` tables, we see that we have a `user_handle`, `first_name`, `last_name`, `email`, and a `status`. 
 
 ```postgres

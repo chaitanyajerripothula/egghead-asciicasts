@@ -1,7 +1,5 @@
 # Work with JSON Data in SQL
 
-[Video link](https://www.egghead.io/lessons/egghead-work-with-json-data-in-sql)
-
 Instructor: [0:00] Let's start by creating a new table called `items`. It's going to have two columns, an `id` -- that's a `uuid` type -- as a `primary key`, then `info` column -- that's `json` -- and it's going to be `not null`.
 
 ```postgres
@@ -33,7 +31,7 @@ postgres=# insert into items values (uuid_generate_v4(),
 )
 ```
 
-[0:36] If you're new to JSON, JSON is an open-centered format that consists of key value pairs. You'll see it most commonly used to transfer data between the Web and a server. As you can see, Postgres accepts JSON as a data type.
+[0:36] If you're new to JSON, JSON is an open-centered format that consists of key-value pairs. You'll see it most commonly used to transfer data between the Web and a server. As you can see, Postgres accepts JSON as a data type.
 
 [0:48] In order to insert JSON into our table, we have to use parentheses, single quotes, then open up with curly brackets. Next, we add whatever data we want and then make sure we close our curlies and parentheses at the end. To select out JSON from a table, you very simply just say `select info from items;`. You'll see here, what we have is our JSON that we inserted.
 
@@ -93,7 +91,7 @@ postgres=# select min((info ->> 'weight')::integer) from items;
 
 [2:32] If you're wondering, we have used the text operator here because Postgres can't cast JSON to a different type. Again, you can use any other aggregate functions like max, sum, and average as long as you cast it first to the right type.
 
-[2:49] Finally, Postgres gives us some functions to help process JSON data. Here we see `json_each` which allows us to expand the outermost JSON object into a set of key value pairs.
+[2:49] Finally, Postgres gives us some functions to help process JSON data. Here we see `json_each` which allows us to expand the outermost JSON object into a set of key-value pairs.
 
 ```postgres
 postgres=# select json_each (info) from items;
