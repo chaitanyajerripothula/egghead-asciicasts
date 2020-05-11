@@ -1,5 +1,3 @@
-# Work with JSON Data in SQL
-
 Instructor: [0:00] Let's start by creating a new table called `items`. It's going to have two columns, an `id` -- that's a `uuid` type -- as a `primary key`, then `info` column -- that's `json` -- and it's going to be `not null`.
 
 ```postgres

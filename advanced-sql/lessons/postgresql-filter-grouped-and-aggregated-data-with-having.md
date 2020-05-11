@@ -1,5 +1,3 @@
-# Filter Grouped and Aggregated Data with Having
-
 Instructor: [0:00] We have a table called `purchases`, and it keeps track of all the orders that take place by our users. As we can see, we have a `date`, a `user_handle`, a `sku`, and the `quantity`. Each row inside of this table is going to represent each checkout per item.
 
 ```postgres

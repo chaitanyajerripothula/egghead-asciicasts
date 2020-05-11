@@ -1,5 +1,3 @@
-# Create Variables and Blocks with Do / Declare
-
 Instructor: [0:00] We have a member's table that has a `start_date`, `end_date`, `user_handle`, `first_name`, and `email`. `start_date` and `end_date` are `date` types, `user_handle` is a `uuid`, and `first_name` and `email` are `text`. 
 
 ```postgres

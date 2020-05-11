@@ -1,5 +1,3 @@
-# Casting Types in SQL
-
 Instructor: [0:00] Whenever we create tables, we have to give each column a specific type. This enforces that all values that we'll insert into that column will keep that or will get an exception thrown.
 
 ```postgres

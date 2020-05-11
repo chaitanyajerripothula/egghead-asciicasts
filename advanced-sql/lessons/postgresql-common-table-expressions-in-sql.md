@@ -1,5 +1,3 @@
-# Common Table Expressions in SQL
-
 Instructor: [0:00] Common Table Expressions, also referred to as a `cte` for short, is created by using the `with` keyword, assigning it to a value, and then adding a query within parentheses.
 
 ```postgres

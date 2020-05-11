@@ -1,5 +1,3 @@
-# Aggregate Inline filters in SQL
-
 Instructor: [0:00] Working with our `purchases` table, which has a row of data for each individual order, let's go ahead and `select` out the `sum` of all of our quantities of orders that had a quantity greater than five. As reference the sum without filtering is 38 because there are two orders that did not purchase over the five-quantity threshold.
 
 ```postgres

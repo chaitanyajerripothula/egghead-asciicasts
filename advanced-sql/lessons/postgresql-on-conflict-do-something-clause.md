@@ -1,5 +1,3 @@
-# On conflict do something clause
-
 Instructor: [0:00] Let's say that you have an eCommerce site and you allow the creation of an account to happen during the checkout process. Whenever a user signs up, we store some basic info about that person into our users table.
 
 ```postgres

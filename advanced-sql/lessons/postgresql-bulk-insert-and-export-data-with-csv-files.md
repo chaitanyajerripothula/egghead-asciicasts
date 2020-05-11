@@ -1,5 +1,3 @@
-# Bulk insert and export data with csv files
-
 Instructor: [0:00] Importing and exporting data from some type of file source like a CSV within SQL is super common. Luckily for us, Postgres has an answer for it. As we can see, our users table is currently empty.
 
 ```postgres
