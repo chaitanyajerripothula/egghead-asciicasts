@@ -109,7 +109,7 @@ postgres=# explain select sum(quantity) from purchases where date < now();
 
 [3:57] Now, both of these queries return the same result. One joins on two tables, and the second one joins on a sub-query that wastefully pulls out all the data from a table. However, looking at our times, the sub-query route is microscopically faster.
 
-![tables](../images/postgresql-profiling-queries-with-explain-analyze-comparing-tables.png)
+![tables](https://res.cloudinary.com/dg3gyk0gu/image/upload/v1589220586/transcript-images/postgresql-profiling-queries-with-explain-analyze-comparing-tables.jpg)
 
 [4:13] I could rerun these multiple times and they would probably flip flop as far as who is quicker. The point is, there is no silver bullet. Make sure you try all of your options when you're trying to profile your queries.
 
